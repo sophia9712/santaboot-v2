@@ -1,19 +1,152 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Términos - SantaBoot</title></head>
-<body style="font-family:system-ui; max-width:800px; margin:40px auto; padding:20px; line-height:1.6;">
-<h1>Términos de Uso - SantaBoot</h1>
-<p><strong>Última actualización:</strong> 15 de abril de 2026</p>
-<h2>1. Aceptación</h2>
-<p>Al usar SantaBoot, aceptas estos términos. Si no estás de acuerdo, no utilices el servicio.</p>
-<h2>2. Uso permitido</h2>
-<p>La skill está diseñada para encender tus propios dispositivos. Queda prohibido usarla para acceder a equipos ajenos sin autorización.</p>
-<h2>3. Responsabilidad</h2>
-<p>SantaBoot no garantiza el encendido de PCs si Wake-on-LAN no está configurado correctamente, el dispositivo está apagado por completo, o la red bloquea paquetes UDP. No nos hacemos responsables de daños derivados del uso indebido.</p>
-<h2>4. Pagos y Reembolsos</h2>
-<p>Las suscripciones Premium se renuevan automáticamente. Puedes cancelar en cualquier momento desde el dashboard. Los reembolsos se gestionan según la política de Stripe.</p>
-<h2>5. Modificaciones</h2>
-<p>Nos reservamos el derecho de actualizar estos términos. Te notificaremos por email o en el dashboard.</p>
-<p>soporte@santaboot.com</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Términos - SantaBoot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #f5f3ff 100%);
+      color: #1a1a2e;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .header {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(102,126,234,0.1);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero {
+      padding: 4rem 0 2rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      color: #6b7280;
+      font-size: 1.1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 0 auto 3rem;
+      max-width: 800px;
+      box-shadow: 0 10px 40px rgba(102,126,234,0.1);
+      border: 1px solid rgba(102,126,234,0.1);
+    }
+    .card h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 1.5rem 0 1rem;
+      color: #1a1a2e;
+    }
+    .card h2:first-child { margin-top: 0; }
+    .card p {
+      color: #4a5568;
+      margin-bottom: 1rem;
+    }
+    .card ul {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+      color: #4a5568;
+    }
+    .card li {
+      margin-bottom: 0.5rem;
+    }
+    .footer {
+      background: #1a1a2e;
+      color: #9ca3af;
+      padding: 2rem 0;
+      text-align: center;
+      margin-top: auto;
+    }
+    .footer a {
+      color: #667eea;
+      text-decoration: none;
+    }
+    .footer a:hover { text-decoration: underline; }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .card { padding: 1.5rem; margin: 0 1rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">SantaBoot</div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Términos de Uso</h1>
+      <p>Última actualización: 15 de abril de 2026</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="card">
+      <h2>1. Aceptación</h2>
+      <p>Al usar SantaBoot, aceptas estos términos. Si no estás de acuerdo, no utilices el servicio.</p>
+
+      <h2>2. Uso permitido</h2>
+      <p>La skill está diseñada para encender <strong>tus propios dispositivos</strong>. Queda prohibido usarla para acceder a equipos ajenos sin autorización.</p>
+
+      <h2>3. Responsabilidad</h2>
+      <p>SantaBoot no garantiza el encendido de PCs si:</p>
+      <ul>
+        <li>Wake-on-LAN no está configurado correctamente</li>
+        <li>El dispositivo está apagado por completo (no en suspensión)</li>
+        <li>La red bloquea paquetes UDP</li>
+      </ul>
+      <p>No nos hacemos responsables de daños derivados del uso indebido.</p>
+
+      <h2>4. Pagos y Reembolsos</h2>
+      <p>Las suscripciones Premium se renuevan automáticamente. Puedes cancelar en cualquier momento desde el dashboard. Los reembolsos se gestionan según la política de Stripe.</p>
+
+      <h2>5. Modificaciones</h2>
+      <p>Nos reservamos el derecho de actualizar estos términos. Te notificaremos por email o en el dashboard.</p>
+
+      <h2>📧 Contacto</h2>
+      <p>soporte.santaboot@gmail.com</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 SantaBoot — <a href="/privacy.html">Política de Privacidad</a> — <a href="/">Volver al inicio</a></p>
+    </div>
+  </footer>
 </body>
 </html>
