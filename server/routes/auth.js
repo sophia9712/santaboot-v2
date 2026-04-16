@@ -196,11 +196,11 @@ router.post('/token', async (req, res) => {
   }
   
   // MODO PRUEBA: Aceptamos aunque el secret sea null o no coincida
-  if (client_secret !== CLIENT_SECRET) {
-    console.log('⚠️ MODO PRUEBA: Secret no coincide pero lo aceptamos igual');
-    console.log('  - Recibido:', client_secret || 'NULL');
-    console.log('  - Esperado:', CLIENT_SECRET);
-  }
+  // Validación NORMAL - El secreto DEBE coincidir
+if (client_secret !== CLIENT_SECRET) {
+  console.error(`❌ invalid_client - Secret no coincide`);
+  return res.status(401).json({ error: 'invalid_client' });
+}
 
   // Buscar código válido
   const { data: codeRecord } = await supabase
