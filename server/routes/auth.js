@@ -5,7 +5,44 @@ const crypto = require('crypto');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // ============================================================
-// === TU LÓGICA ORIGINAL (VIP, Registro, Login) - INTACTA ===
+// === RATE LIMITING (Protección contra ataques) ===
+// ============================================================
+const rateLimit = new Map();
+
+function checkRateLimit(ip, limit = 10, windowMs = 60000) {
+  const now = Date.now();
+  const key = ip;
+  
+  if (!rateLimit.has(key)) {
+    rateLimit.set(key, [now]);
+    return true;
+  }
+  
+  const requests = rateLimit.get(key).filter(time => now - time < windowMs);
+  
+  if (requests.length >= limit) {
+    return false;
+  }
+  
+  requests.push(now);
+  rateLimit.set(key, requests);
+  return true;
+}
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, times] of rateLimit.entries()) {
+    const validTimes = times.filter(time => now - time < 60000);
+    if (validTimes.length === 0) {
+      rateLimit.delete(ip);
+    } else {
+      rateLimit.set(ip, validTimes);
+    }
+  }
+}, 3600000);
+
+// ============================================================
+// === VIP CODES ===
 // ============================================================
 const VIP_CODES = {
   'SANTACRUZVIP': { days: 3650, description: 'Premium de por vida (~10 años)' },
@@ -86,28 +123,34 @@ router.post('/upgrade-to-premium', async (req, res) => {
 });
 
 // ============================================================
-// === VINCULACIÓN AUTOMÁTICA CON ALEXA (OAuth2) ===
+// === OAUTH PARA ALEXA ===
 // ============================================================
 const CLIENT_ID = 'santaboot-alexa-client';
 const CLIENT_SECRET = process.env.ALEXA_CLIENT_SECRET || 'SantaBoot2026SecretXYZ';
 
+const ALLOWED_REDIRECT_URIS = [
+  'https://layla.amazon.com/api/skill/link/M20X07RJHC3DO9',
+  'https://alexa.amazon.com/api/skill/link/M20X07RJHC3DO9',
+  'https://alexa.amazon.co.jp/api/skill/link/M20X07RJHC3DO9',
+  'https://pitanqui.amazon.com/api/skill/link/M20X07RJHC3DO9'
+];
+
 console.log('🔐 CLIENT_SECRET cargado:', CLIENT_SECRET ? '✅ Sí (' + CLIENT_SECRET.length + ' chars)' : '❌ No');
 console.log('🔐 CLIENT_ID:', CLIENT_ID);
 
-// 1. Alexa redirige aquí al usuario para loguearse
+// 1. Authorize
 router.get('/authorize', async (req, res) => {
   const { response_type, client_id, redirect_uri, state } = req.query;
   
-  console.log('🔐 /authorize recibido:', { 
-    client_id, 
-    redirect_uri, 
-    state,
-    response_type 
-  });
+  console.log('🔐 /authorize recibido:', { client_id, redirect_uri });
   
   if (client_id !== CLIENT_ID || response_type !== 'code') {
-    console.error('❌ Configuración inválida. client_id:', client_id, 'esperado:', CLIENT_ID);
     return res.status(400).send('Configuración inválida');
+  }
+  
+  if (!ALLOWED_REDIRECT_URIS.includes(redirect_uri)) {
+    console.error('❌ redirect_uri no permitido:', redirect_uri);
+    return res.status(400).send('redirect_uri no permitido');
   }
 
   const code = crypto.randomBytes(16).toString('hex');
@@ -123,8 +166,7 @@ router.get('/authorize', async (req, res) => {
   
   if (insertError) {
     console.error('❌ Error al guardar código:', insertError);
-  } else {
-    console.log('✅ Código guardado');
+    return res.status(500).send('Error interno');
   }
 
   const siteUrl = process.env.SITE_URL || 'santaboot-production.up.railway.app';
@@ -133,13 +175,12 @@ router.get('/authorize', async (req, res) => {
   res.redirect(`${normalizedUrl}/login.html?code=${code}&state=${state}`);
 });
 
-// 2. Callback tras login exitoso
+// 2. Callback
 router.get('/authorize/callback', async (req, res) => {
   const { code, state, userId } = req.query;
   
   console.log('🔁 /authorize/callback:', { 
     code: code ? code.substring(0, 10) + '...' : null, 
-    state, 
     userId 
   });
 
@@ -150,11 +191,7 @@ router.get('/authorize/callback', async (req, res) => {
     .eq('used', false)
     .single();
     
-  if (fetchError) {
-    console.error('❌ Error al buscar código:', fetchError);
-  }
-
-  if (!codeRecord || new Date(codeRecord.expires_at) < new Date()) {
+  if (fetchError || !codeRecord || new Date(codeRecord.expires_at) < new Date()) {
     console.error('❌ Código no encontrado o expirado');
     return res.status(400).send('Sesión expirada');
   }
@@ -170,30 +207,86 @@ router.get('/authorize/callback', async (req, res) => {
   res.redirect(`${codeRecord.redirect_uri}?code=${code}&state=${state}`);
 });
 
-// 3. Intercambio de token - MODO PRUEBA ACTIVADO (acepta cualquier secret)
+// 3. Token endpoint - CON SOPORTE PARA REFRESH_TOKEN
 router.post('/token', async (req, res) => {
-  const { grant_type, code, client_id, client_secret, redirect_uri } = req.body;
+  const clientIp = req.ip || req.connection.remoteAddress;
+  
+  if (!checkRateLimit(clientIp)) {
+    console.error(`❌ Rate limit excedido para IP: ${clientIp}`);
+    return res.status(429).json({ error: 'too_many_requests' });
+  }
+  
+  const { grant_type, code, client_id, client_secret, redirect_uri, refresh_token } = req.body;
   
   console.log('🎫 /token recibido:');
   console.log('  - grant_type:', grant_type);
-  console.log('  - client_id recibido:', client_id);
-  console.log('  - client_id esperado:', CLIENT_ID);
-  console.log('  - client_secret recibido:', client_secret ? client_secret.substring(0, 15) + '...' : 'NULL');
+  console.log('  - client_id:', client_id);
+  console.log('  - client_secret:', client_secret ? '***' : 'NULL');
+  console.log('  - IP:', clientIp);
   
-  // Validación básica (solo grant_type y client_id)
-  if (grant_type !== 'authorization_code' || client_id !== CLIENT_ID) {
-    console.error('❌ invalid_client - grant_type o client_id inválido');
+  // Validación de client_id
+  if (client_id !== CLIENT_ID) {
+    console.error('❌ client_id inválido');
     return res.status(401).json({ error: 'invalid_client' });
   }
   
-  // MODO PRUEBA: Aceptamos aunque el secret sea null o no coincida
+  // MODO PRUEBA: aceptamos cualquier secret
   if (client_secret !== CLIENT_SECRET) {
     console.log('⚠️ MODO PRUEBA: Secret no coincide pero lo aceptamos igual');
-    console.log('  - Recibido:', client_secret || 'NULL');
-  } else {
-    console.log('✅ Secret coincide correctamente');
   }
-
+  
+  // ============================================================
+  // === FLUJO: REFRESH_TOKEN ===
+  // ============================================================
+  if (grant_type === 'refresh_token') {
+    console.log('🔄 Procesando refresh_token...');
+    
+    const { data: tokenRecord } = await supabase
+      .from('alexa_tokens')
+      .select('code')
+      .eq('refresh_token', refresh_token)
+      .single();
+    
+    if (!tokenRecord) {
+      console.error('❌ Refresh token inválido');
+      return res.status(400).json({ error: 'invalid_grant' });
+    }
+    
+    const new_access_token = crypto.randomBytes(32).toString('hex');
+    const new_refresh_token = crypto.randomBytes(32).toString('hex');
+    
+    await supabase
+      .from('alexa_tokens')
+      .update({ 
+        access_token: new_access_token, 
+        refresh_token: new_refresh_token,
+        updated_at: new Date().toISOString()
+      })
+      .eq('refresh_token', refresh_token);
+    
+    console.log('✅ Token renovado correctamente');
+    
+    return res.json({
+      access_token: new_access_token,
+      token_type: 'Bearer',
+      expires_in: 3600,
+      refresh_token: new_refresh_token
+    });
+  }
+  
+  // ============================================================
+  // === FLUJO: AUTHORIZATION_CODE ===
+  // ============================================================
+  if (grant_type !== 'authorization_code') {
+    console.error('❌ grant_type inválido:', grant_type);
+    return res.status(400).json({ error: 'unsupported_grant_type' });
+  }
+  
+  if (!ALLOWED_REDIRECT_URIS.includes(redirect_uri)) {
+    console.error('❌ redirect_uri no permitido:', redirect_uri);
+    return res.status(400).json({ error: 'invalid_request' });
+  }
+  
   const { data: codeRecord } = await supabase
     .from('oauth_codes')
     .select('*')
@@ -201,29 +294,34 @@ router.post('/token', async (req, res) => {
     .eq('used', true)
     .single();
 
-  if (!codeRecord || codeRecord.redirect_uri !== redirect_uri) {
-    console.error('❌ invalid_grant - Código no válido');
+  if (!codeRecord) {
+    console.error('❌ Código no encontrado');
+    return res.status(400).json({ error: 'invalid_grant' });
+  }
+  
+  if (codeRecord.redirect_uri !== redirect_uri) {
+    console.error('❌ redirect_uri no coincide');
     return res.status(400).json({ error: 'invalid_grant' });
   }
 
-  const access_token = crypto.randomBytes(24).toString('hex');
-  const refresh_token = crypto.randomBytes(24).toString('hex');
-  
-  console.log('✅ Generando tokens');
+  const access_token = crypto.randomBytes(32).toString('hex');
+  const new_refresh_token = crypto.randomBytes(32).toString('hex');
   
   await supabase.from('alexa_tokens').upsert({ 
     code, 
     access_token, 
-    refresh_token, 
-    used: true 
+    refresh_token: new_refresh_token,
+    used: true,
+    created_at: new Date().toISOString()
   }, { onConflict: 'code' });
 
-  console.log('✅ Respondiendo con access_token');
+  console.log('✅ Token guardado correctamente');
+  
   res.json({
     access_token,
     token_type: 'Bearer',
     expires_in: 3600,
-    refresh_token
+    refresh_token: new_refresh_token
   });
 });
 
