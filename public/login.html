@@ -103,32 +103,39 @@ input:focus {
 </div>
 
 <script>
-// Detectar OAuth de Alexa al cargar
+// ============================================================================
+// DETECTAR Y GUARDAR PARÁMETROS OAUTH AL CARGAR
+// ============================================================================
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
   const state = params.get('state');
+  
+  console.log('🔍 Login cargado. URL params:', { 
+    code: code ? code.substring(0, 10) + '...' : null, 
+    state: state 
+  });
+  
   if (code && state) {
-    sessionStorage.setItem('alexa_oauth', JSON.stringify({ code, state }));
+    // Guardar para usar después del login
+    sessionStorage.setItem('alexa_oauth_code', code);
+    sessionStorage.setItem('alexa_oauth_state', state);
+    console.log('✅ OAuth guardado en sessionStorage');
+  } else {
+    console.log('⚠️ No hay parámetros OAuth en la URL');
   }
 });
 
-// Función para completar OAuth tras login exitoso
-window.completeAlexaOAuth = async function(userId) {
-  const stored = sessionStorage.getItem('alexa_oauth');
-  if (!stored) return false;
-  const { code, state } = JSON.parse(stored);
-  sessionStorage.removeItem('alexa_oauth');
-  window.location.href = `/auth/authorize/callback?code=${code}&state=${state}&userId=${userId}`;
-  return true;
-};
-
-// Handler de login
+// ============================================================================
+// HANDLER DE LOGIN
+// ============================================================================
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
   const errorEl = document.getElementById('errorMessage');
+  
+  console.log('🔑 Intentando login con:', email);
   
   try {
     const res = await fetch('/auth/login', {
@@ -138,11 +145,39 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     });
     const data = await res.json();
     
+    console.log('📥 Respuesta login:', res.status, data);
+    
     if (res.ok) {
+      // Guardar sesión
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      const handled = await window.completeAlexaOAuth(data.user?.id);
-      if (!handled) {
+      
+      console.log('✅ Login exitoso. User ID:', data.user?.id);
+      
+      // Verificar si hay OAuth pendiente
+      const oauthCode = sessionStorage.getItem('alexa_oauth_code');
+      const oauthState = sessionStorage.getItem('alexa_oauth_state');
+      
+      console.log('🔗 Verificando OAuth:', { 
+        hasCode: !!oauthCode, 
+        hasState: !!oauthState,
+        userId: data.user?.id 
+      });
+      
+      if (oauthCode && oauthState && data.user?.id) {
+        // Hay OAuth pendiente → redirigir al callback
+        const callbackUrl = `/auth/authorize/callback?code=${oauthCode}&state=${oauthState}&userId=${data.user.id}`;
+        console.log(' Redirigiendo a OAuth callback:', callbackUrl);
+        
+        // Limpiar sessionStorage
+        sessionStorage.removeItem('alexa_oauth_code');
+        sessionStorage.removeItem('alexa_oauth_state');
+        
+        // Redirigir
+        window.location.href = callbackUrl;
+      } else {
+        // No hay OAuth → ir al dashboard normal
+        console.log('📊 No hay OAuth, yendo a dashboard');
         window.location.href = '/dashboard.html';
       }
     } else {
@@ -150,7 +185,8 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
       errorEl.style.display = 'block';
       setTimeout(() => errorEl.style.display = 'none', 4000);
     }
-  } catch {
+  } catch (err) {
+    console.error('❌ Error de conexión:', err);
     errorEl.textContent = 'Error de conexión';
     errorEl.style.display = 'block';
     setTimeout(() => errorEl.style.display = 'none', 4000);
