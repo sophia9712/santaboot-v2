@@ -8,36 +8,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0a0f1c; color: #f1f5f9; line-height: 1.5; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ffffff; line-height: 1.5; }
         
-        .header { padding: 1rem 2rem; background: rgba(10,15,28,0.95); border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        .logo { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .header { padding: 1rem 2rem; background: rgba(10,10,10,0.95); border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
         .user-info { display: flex; align-items: center; gap: 1rem; }
-        .user-email { color: #94a3b8; }
+        .user-email { color: #a0a0a0; }
         .btn-logout { background: rgba(239,68,68,0.2); border: 1px solid #ef4444; padding: 0.5rem 1rem; border-radius: 30px; color: #ef4444; cursor: pointer; transition: all 0.3s; }
         .btn-logout:hover { background: rgba(239,68,68,0.4); }
         
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
         
         .plan-badge { display: inline-block; padding: 0.25rem 1rem; border-radius: 20px; font-size: 0.8rem; margin-bottom: 1rem; }
-        .plan-free { background: rgba(100,100,100,0.2); color: #94a3b8; }
+        .plan-free { background: rgba(100,100,100,0.2); color: #a0a0a0; }
         .plan-premium { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white; }
         .upgrade-btn { background: linear-gradient(135deg, #f59e0b, #d97706); border: none; padding: 0.25rem 0.75rem; border-radius: 20px; color: white; cursor: pointer; margin-left: 1rem; }
         
-        .card { background: rgba(255,255,255,0.02); border: 1px solid #1e293b; border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; }
         .card h2 { font-size: 1.3rem; margin-bottom: 1rem; }
         
         .form-group { margin-bottom: 1rem; }
         label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-        input { width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid #1e293b; border-radius: 12px; color: white; }
+        input { width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; }
         input:focus { outline: none; border-color: #4f46e5; }
         
         .btn-primary { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 0.8rem 1.5rem; border: none; border-radius: 40px; color: white; font-weight: 600; cursor: pointer; transition: transform 0.3s; }
         .btn-primary:hover { transform: translateY(-2px); }
         
-        .device-card { background: rgba(255,255,255,0.03); border: 1px solid #1e293b; border-radius: 16px; padding: 1rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .device-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
         .device-info h3 { margin-bottom: 0.25rem; }
-        .device-info p { color: #94a3b8; font-size: 0.8rem; }
+        .device-info p { color: #a0a0a0; font-size: 0.8rem; }
         .btn-delete { background: rgba(239,68,68,0.2); border: 1px solid #ef4444; padding: 0.5rem 1rem; border-radius: 30px; color: #ef4444; cursor: pointer; }
         
         .alexa-status { margin: 0.5rem 0; }
@@ -48,8 +48,8 @@
         .error-message { background: rgba(239,68,68,0.1); border: 1px solid #ef4444; color: #ef4444; }
         .success-message { background: rgba(16,185,129,0.1); border: 1px solid #10b981; color: #10b981; }
         
-        .loading { text-align: center; color: #94a3b8; padding: 2rem; }
-        .empty-message { text-align: center; color: #94a3b8; padding: 2rem; }
+        .loading { text-align: center; color: #a0a0a0; padding: 2rem; }
+        .empty-message { text-align: center; color: #a0a0a0; padding: 2rem; }
         
         @media (max-width: 768px) { .container { padding: 1rem; } .device-card { flex-direction: column; text-align: center; } }
     </style>
@@ -71,7 +71,7 @@
             <p class="alexa-status unlinked" id="alexaStatus">Estado: No vinculado</p>
             <button id="linkAlexaBtn" class="btn-primary" onclick="startAlexaLink()">Vincular cuenta</button>
             <button id="unlinkAlexaBtn" class="btn-delete" onclick="unlinkAlexa()" style="display:none;">Desvincular</button>
-            <p style="font-size:0.8rem; color:#64748b; margin-top:0.5rem;">Al vincular, Alexa podrá encender tus PCs automáticamente.</p>
+            <p style="font-size:0.8rem; color:#666; margin-top:0.5rem;">Al vincular, Alexa podrá encender tus PCs automáticamente.</p>
         </div>
         
         <div class="card">

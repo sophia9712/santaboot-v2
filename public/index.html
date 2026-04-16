@@ -15,42 +15,66 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0f1c;
-            color: #f1f5f9;
+            background: #0a0a0a;
+            color: #ffffff;
             line-height: 1.5;
             overflow-x: hidden;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
+        /* Custom Cursor */
+        .cursor {
             width: 8px;
+            height: 8px;
+            background: #4f46e5;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(79, 70, 229, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.2s;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #0f1629;
+            background: #1a1a1a;
         }
         ::-webkit-scrollbar-thumb {
             background: #4f46e5;
-            border-radius: 4px;
+            border-radius: 3px;
         }
 
         /* Header */
         .header {
             position: fixed;
             top: 0;
-            width: 100%;
-            padding: 1rem 5%;
-            background: rgba(10, 15, 28, 0.95);
-            backdrop-filter: blur(10px);
+            left: 0;
+            right: 0;
+            padding: 1.2rem 5%;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .logo {
-            font-size: 1.6rem;
-            font-weight: 800;
+            font-size: 1.5rem;
+            font-weight: 700;
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -64,11 +88,11 @@
         }
 
         .nav a {
-            color: #94a3b8;
+            color: #a0a0a0;
             text-decoration: none;
+            font-size: 0.9rem;
             font-weight: 500;
             transition: color 0.3s;
-            font-size: 0.9rem;
         }
 
         .nav a:hover {
@@ -84,13 +108,12 @@
             position: absolute;
             top: 100%;
             left: 0;
-            background: #0f1629;
-            min-width: 200px;
+            background: #1a1a1a;
+            min-width: 180px;
             border-radius: 12px;
             padding: 0.5rem 0;
-            border: 1px solid #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             margin-top: 0.5rem;
-            z-index: 100;
         }
 
         .dropdown:hover .dropdown-content {
@@ -100,13 +123,7 @@
         .dropdown-content a {
             display: block;
             padding: 0.5rem 1rem;
-            color: #94a3b8;
             font-size: 0.85rem;
-        }
-
-        .dropdown-content a:hover {
-            background: rgba(79, 70, 229, 0.1);
-            color: #4f46e5;
         }
 
         .btn-login {
@@ -116,13 +133,13 @@
             color: white !important;
         }
 
-        /* Hero Section */
+        /* Hero */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 5%;
+            padding: 0 8%;
             gap: 4rem;
             position: relative;
         }
@@ -134,13 +151,12 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(79, 70, 229, 0.15), transparent);
+            background: radial-gradient(circle at 20% 40%, rgba(79, 70, 229, 0.15), transparent);
             pointer-events: none;
         }
 
         .hero-content {
             flex: 1;
-            z-index: 1;
         }
 
         .hero-badge {
@@ -154,18 +170,18 @@
         }
 
         .hero h1 {
-            font-size: 3.8rem;
+            font-size: 4rem;
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #ffffff, #94a3b8);
+            background: linear-gradient(135deg, #ffffff, #a0a0a0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
             font-size: 1.1rem;
-            color: #94a3b8;
+            color: #a0a0a0;
             margin-bottom: 2rem;
             max-width: 500px;
         }
@@ -188,12 +204,12 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
         }
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 0.8rem 2rem;
             border-radius: 40px;
             color: white;
@@ -207,22 +223,19 @@
             border-color: #4f46e5;
         }
 
-        .hero-video {
+        .hero-image {
             flex: 1;
-            position: relative;
-            z-index: 1;
         }
 
-        .hero-video video {
+        .hero-image img {
             width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-radius: 24px;
         }
 
-        /* Features Section */
+        /* Features */
         .features {
-            padding: 6rem 5%;
-            background: #0f1629;
+            padding: 6rem 8%;
+            background: #0f0f0f;
         }
 
         .section-title {
@@ -234,7 +247,7 @@
 
         .section-subtitle {
             text-align: center;
-            color: #94a3b8;
+            color: #a0a0a0;
             margin-bottom: 3rem;
             max-width: 600px;
             margin-left: auto;
@@ -243,30 +256,30 @@
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid #1e293b;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
             padding: 2rem;
             transition: transform 0.3s, border-color 0.3s;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: #4f46e5;
+            border-color: rgba(79, 70, 229, 0.5);
         }
 
         .feature-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            border-radius: 16px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -274,30 +287,29 @@
         }
 
         .feature-icon i {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
         }
 
         .feature-card h3 {
             margin-bottom: 0.75rem;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
 
         .feature-card p {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            line-height: 1.6;
+            color: #a0a0a0;
+            font-size: 0.85rem;
+            line-height: 1.5;
         }
 
         /* How It Works */
         .how-it-works {
-            padding: 6rem 5%;
-            background: #0a0f1c;
+            padding: 6rem 8%;
+            background: #0a0a0a;
         }
 
         .steps {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
             gap: 3rem;
             max-width: 1000px;
             margin: 0 auto;
@@ -306,46 +318,43 @@
         .step {
             text-align: center;
             flex: 1;
-            min-width: 200px;
         }
 
         .step-number {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             margin: 0 auto 1rem;
         }
 
         .step h3 {
             margin-bottom: 0.5rem;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         .step p {
-            color: #94a3b8;
-            font-size: 0.9rem;
+            color: #a0a0a0;
+            font-size: 0.85rem;
         }
 
         /* Integrations */
         .integrations {
-            padding: 6rem 5%;
-            background: #0f1629;
+            padding: 4rem 8%;
+            background: #0f0f0f;
             text-align: center;
         }
 
         .integrations-grid {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
             gap: 3rem;
-            max-width: 800px;
-            margin: 2rem auto 0;
+            margin-top: 2rem;
         }
 
         .integration {
@@ -353,49 +362,49 @@
         }
 
         .integration i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: #4f46e5;
             margin-bottom: 0.5rem;
         }
 
         .integration span {
             display: block;
-            font-weight: 500;
+            font-size: 0.85rem;
+            color: #a0a0a0;
         }
 
         /* Pricing */
         .pricing {
-            padding: 6rem 5%;
-            background: #0a0f1c;
+            padding: 6rem 8%;
+            background: #0a0a0a;
         }
 
         .pricing-grid {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
             gap: 2rem;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         .plan {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid #1e293b;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 24px;
             padding: 2rem;
-            width: 320px;
+            width: 300px;
             transition: transform 0.3s;
             position: relative;
         }
 
         .plan:hover {
             transform: translateY(-5px);
-            border-color: #4f46e5;
+            border-color: rgba(79, 70, 229, 0.5);
         }
 
         .plan.popular {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
-            border-color: #4f46e5;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(124, 58, 237, 0.08));
+            border-color: rgba(79, 70, 229, 0.5);
         }
 
         .popular-badge {
@@ -406,25 +415,25 @@
             background: linear-gradient(135deg, #f59e0b, #d97706);
             padding: 0.25rem 1rem;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
         .plan h3 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin-bottom: 0.5rem;
         }
 
         .price {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 800;
             margin: 1rem 0;
         }
 
         .price span {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: normal;
-            color: #94a3b8;
+            color: #a0a0a0;
         }
 
         .plan-features {
@@ -434,23 +443,21 @@
 
         .plan-features li {
             padding: 0.5rem 0;
-            color: #94a3b8;
+            color: #a0a0a0;
+            font-size: 0.85rem;
         }
 
         .plan-features li i {
             margin-right: 0.5rem;
+            width: 18px;
         }
 
-        .plan-features li .fa-check {
+        .fa-check {
             color: #10b981;
         }
 
-        .plan-features li .fa-times {
+        .fa-times {
             color: #ef4444;
-        }
-
-        .plan-features li.disabled {
-            color: #555;
         }
 
         .plan .btn {
@@ -460,7 +467,7 @@
             padding: 0.8rem;
             border-radius: 40px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
             text-decoration: none;
             font-weight: 600;
@@ -474,35 +481,27 @@
 
         /* FAQ */
         .faq {
-            padding: 6rem 5%;
-            background: #0f1629;
+            padding: 6rem 8%;
+            background: #0f0f0f;
         }
 
         .faq-grid {
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
         }
 
         .faq-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid #1e293b;
-            border-radius: 16px;
-            margin-bottom: 1rem;
-            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem 0;
         }
 
         .faq-question {
-            padding: 1.2rem 1.5rem;
-            font-weight: 600;
-            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.3s;
-        }
-
-        .faq-question:hover {
-            background: rgba(79, 70, 229, 0.05);
+            cursor: pointer;
+            padding: 0.5rem 0;
+            font-weight: 500;
         }
 
         .faq-question i {
@@ -515,47 +514,46 @@
         }
 
         .faq-answer {
-            padding: 0 1.5rem;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            color: #94a3b8;
+            transition: max-height 0.3s ease;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
 
         .faq-question.active + .faq-answer {
-            padding: 0 1.5rem 1.2rem;
             max-height: 200px;
+            padding: 0.5rem 0 1rem;
         }
 
         /* CTA */
         .cta {
             text-align: center;
-            padding: 6rem 5%;
+            padding: 6rem 8%;
             background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
         }
 
         .cta h2 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
         }
 
         .cta p {
-            color: #94a3b8;
+            color: #a0a0a0;
             margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         /* Footer */
         .footer {
-            padding: 4rem 5% 2rem;
-            border-top: 1px solid #1e293b;
+            background: #0a0a0a;
+            padding: 4rem 8% 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .footer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
             margin-bottom: 3rem;
         }
@@ -563,15 +561,15 @@
         .footer-column h4 {
             color: #4f46e5;
             margin-bottom: 1rem;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .footer-column a {
             display: block;
-            color: #94a3b8;
+            color: #a0a0a0;
             text-decoration: none;
             margin-bottom: 0.5rem;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             transition: color 0.3s;
         }
 
@@ -582,36 +580,58 @@
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
-            border-top: 1px solid #1e293b;
-            color: #64748b;
-            font-size: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #666;
+            font-size: 0.75rem;
         }
 
         /* Responsive */
+        @media (max-width: 968px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .pricing-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .nav {
                 display: none;
             }
-
             .hero {
                 flex-direction: column;
                 text-align: center;
                 padding-top: 100px;
             }
-
             .hero h1 {
                 font-size: 2.5rem;
             }
-
             .hero p {
                 margin-left: auto;
                 margin-right: auto;
             }
-
             .hero-buttons {
                 justify-content: center;
             }
-
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .steps {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .integrations-grid {
+                flex-wrap: wrap;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
             .section-title {
                 font-size: 2rem;
             }
@@ -619,13 +639,16 @@
     </style>
 </head>
 <body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
     <header class="header">
         <a href="/" class="logo">SantaBoot</a>
         <nav class="nav">
-            <a href="/">Producto</a>
+            <a href="#producto">Producto</a>
             <a href="/precios.html">Precios</a>
             <a href="/descargas.html">Descargas</a>
-            <a href="/ecosistemas.html">Ecosistemas</a>
+            <a href="#ecosistemas">Ecosistemas</a>
             <div class="dropdown">
                 <a href="#">Recursos <i class="fas fa-chevron-down"></i></a>
                 <div class="dropdown-content">
@@ -647,8 +670,7 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="producto">
         <div class="hero-content">
             <div class="hero-badge">
                 <i class="fas fa-microphone"></i> Control por voz
@@ -660,15 +682,11 @@
                 <a href="/descargas.html" class="btn-secondary">Descargar cliente</a>
             </div>
         </div>
-        <div class="hero-video">
-            <video autoplay loop muted playsinline>
-                <source src="https://cdn.pixabay.com/video/2023/06/20/169256-836953433_large.mp4" type="video/mp4">
-                Tu navegador no soporta el elemento de video.
-            </video>
+        <div class="hero-image">
+            <img src="https://placehold.co/600x450/1a1a1a/4f46e5?text=SantaBoot+Demo" alt="SantaBoot Demo">
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="features">
         <h2 class="section-title">Todo lo que puedes hacer</h2>
         <p class="section-subtitle">SantaBoot transforma tu PC en el centro de tu casa inteligente</p>
@@ -706,7 +724,6 @@
         </div>
     </section>
 
-    <!-- How It Works -->
     <section class="how-it-works">
         <h2 class="section-title">Empieza en minutos</h2>
         <p class="section-subtitle">Sin reemplazar tu setup actual ni montar una infraestructura complicada</p>
@@ -729,8 +746,7 @@
         </div>
     </section>
 
-    <!-- Integrations -->
-    <section class="integrations">
+    <section class="integrations" id="ecosistemas">
         <h2 class="section-title">Funciona con los ecosistemas que ya usas</h2>
         <div class="integrations-grid">
             <div class="integration">
@@ -752,7 +768,6 @@
         </div>
     </section>
 
-    <!-- Pricing -->
     <section class="pricing">
         <h2 class="section-title">Elige cuánto quieres hacer con tu PC</h2>
         <p class="section-subtitle">Precios especiales de lanzamiento por tiempo limitado</p>
@@ -762,15 +777,12 @@
                 <div class="price">0€<span>/siempre</span></div>
                 <ul class="plan-features">
                     <li><i class="fas fa-check"></i> Wake-on-LAN</li>
-                    <li class="disabled"><i class="fas fa-times"></i> Apagado remoto</li>
-                    <li class="disabled"><i class="fas fa-times"></i> Acciones rápidas</li>
-                    <li class="disabled"><i class="fas fa-times"></i> Sensores</li>
+                    <li><i class="fas fa-times"></i> Apagado remoto</li>
+                    <li><i class="fas fa-times"></i> Acciones rápidas</li>
                     <li><i class="fas fa-check"></i> 1 ordenador</li>
-                    <li><i class="fas fa-check"></i> Solo con Alexa</li>
                 </ul>
                 <a href="/register.html" class="btn">Empezar gratis</a>
             </div>
-
             <div class="plan popular">
                 <div class="popular-badge">Más popular</div>
                 <h3>Pro</h3>
@@ -779,13 +791,10 @@
                     <li><i class="fas fa-check"></i> Wake-on-LAN</li>
                     <li><i class="fas fa-check"></i> Apagado remoto</li>
                     <li><i class="fas fa-check"></i> Acciones rápidas</li>
-                    <li><i class="fas fa-check"></i> Sensores</li>
                     <li><i class="fas fa-check"></i> Hasta 5 ordenadores</li>
-                    <li><i class="fas fa-check"></i> Alexa + Apple Home + HA</li>
                 </ul>
                 <a href="/register.html?plan=pro" class="btn">Elegir Pro</a>
             </div>
-
             <div class="plan">
                 <h3>Ultimate</h3>
                 <div class="price">19.99€<span>/año</span></div>
@@ -793,16 +802,13 @@
                     <li><i class="fas fa-check"></i> Wake-on-LAN</li>
                     <li><i class="fas fa-check"></i> Apagado remoto</li>
                     <li><i class="fas fa-check"></i> Acciones rápidas</li>
-                    <li><i class="fas fa-check"></i> Sensores + Webcam</li>
                     <li><i class="fas fa-check"></i> Hasta 20 ordenadores</li>
-                    <li><i class="fas fa-check"></i> Todas las integraciones</li>
                 </ul>
                 <a href="/register.html?plan=ultimate" class="btn">Elegir Ultimate</a>
             </div>
         </div>
     </section>
 
-    <!-- FAQ -->
     <section class="faq">
         <h2 class="section-title">Preguntas frecuentes</h2>
         <div class="faq-grid">
@@ -825,41 +831,32 @@
                     ¿Funciona con Home Assistant y Apple Home?
                     <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="faq-answer">Sí. El plan Pro incluye integración con Alexa, Apple Home y Home Assistant. El plan Ultimate añade Matter experimental.</div>
+                <div class="faq-answer">Sí. El plan Pro incluye integración con Alexa, Apple Home y Home Assistant.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
                     ¿Sirve solo para encender y apagar el PC?
                     <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="faq-answer">No. También puedes crear acciones rápidas (abrir programas, enviar teclas), monitorizar sensores (temperatura, CPU, RAM) y ver tu webcam en vivo.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">
-                    ¿Está pensado solo para usuarios avanzados?
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">Para nada. La instalación es sencilla y la configuración se hace desde una interfaz amigable. Cualquier persona puede usarlo.</div>
+                <div class="faq-answer">No. También puedes crear acciones rápidas, monitorizar sensores y ver tu webcam en vivo.</div>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
     <section class="cta">
         <h2>Listo para desbloquear todo el potencial de tu PC</h2>
         <p>Únete a miles de usuarios que ya controlan su computadora con la voz</p>
         <a href="/register.html" class="btn-primary">Comenzar ahora</a>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-grid">
             <div class="footer-column">
                 <h4>Producto</h4>
-                <a href="/">Características</a>
+                <a href="#producto">Características</a>
                 <a href="/precios.html">Precios</a>
                 <a href="/descargas.html">Descargas</a>
-                <a href="/ecosistemas.html">Ecosistemas</a>
+                <a href="#ecosistemas">Ecosistemas</a>
             </div>
             <div class="footer-column">
                 <h4>Recursos</h4>
@@ -887,14 +884,23 @@
     </footer>
 
     <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+            follower.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+        });
+
         // FAQ Accordion
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                question.classList.toggle('active');
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                q.classList.toggle('active');
             });
         });
 
-        // Smooth scroll for anchor links
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
