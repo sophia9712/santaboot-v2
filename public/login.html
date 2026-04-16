@@ -37,15 +37,77 @@
     <div class="back-home"><a href="/">← Volver al inicio</a></div>
   </div>
   <script>
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      try {
-        const res = await fetch('/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: document.getElementById('email').value, password: document.getElementById('password').value }) });
-        const data = await res.json();
-        if (res.ok) { localStorage.setItem('token', data.token); localStorage.setItem('user', JSON.stringify(data.user)); alert('✅ Inicio de sesión exitoso'); window.location.href = '/dashboard.html'; }
-        else alert('❌ Error: ' + data.error);
-      } catch { alert('❌ Error al conectar'); }
-    });
+    // handler de login:
+document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  
+  const res = await fetch('/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  
+  const data = await res.json();
+  
+  if (res.ok) {
+    // Guardar sesión
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    
+    // flujo OAuth de Alexa
+    const oauthHandled = await window.handleAlexaOAuth(data.user?.id);
+    
+    // Si NO hay OAuth pendiente, redirigir normal al dashboard
+    if (!oauthHandled) {
+      window.location.href = '/dashboard.html';
+    }
+    // Si SÍ hay OAuth, ya se redirigió al callback de Alexa
+  } else {
+    alert('Error: ' + data.error);
+  }
+});
   </script>
+
+<script>
+// ============================================================================
+// SOPORTE PARA VINCULACIÓN AUTOMÁTICA CON ALEXA (OAuth2)
+// ============================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Detectar si viene del flujo de Alexa
+  const urlParams = new URLSearchParams(window.location.search);
+  const oauthCode = urlParams.get('code');
+  const oauthState = urlParams.get('state');
+  
+  if (oauthCode && oauthState) {
+    // Guardar para usar después del login
+    sessionStorage.setItem('alexa_oauth_code', oauthCode);
+    sessionStorage.setItem('alexa_oauth_state', oauthState);
+    console.log('🔐 OAuth detectado, esperando login...');
+  }
+});
+
+// 2. Función que debe llamarse tras login exitoso
+window.handleAlexaOAuth = async function(userId) {
+  const code = sessionStorage.getItem('alexa_oauth_code');
+  const state = sessionStorage.getItem('alexa_oauth_state');
+  
+  if (code && state && userId) {
+    // Limpiar sessionStorage
+    sessionStorage.removeItem('alexa_oauth_code');
+    sessionStorage.removeItem('alexa_oauth_state');
+    
+    // Redirigir al callback de Alexa con el userId
+    const callbackUrl = `/auth/authorize/callback?code=${code}&state=${state}&userId=${userId}`;
+    console.log('🔗 Completando OAuth:', callbackUrl);
+    window.location.href = callbackUrl;
+    return true;
+  }
+  return false;
+};
+</script>
+
 </body>
 </html>
