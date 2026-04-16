@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas frecuentes — SantaBoot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0f1c; color: #f1f5f9; line-height: 1.5; }
+        
+        .header { position: fixed; top: 0; width: 100%; padding: 1rem 5%; background: rgba(10,15,28,0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid #1e293b; }
+        .logo { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+        .nav a { color: #94a3b8; text-decoration: none; font-weight: 500; transition: color 0.3s; font-size: 0.9rem; }
+        .nav a:hover { color: #4f46e5; }
+        .dropdown { position: relative; }
+        .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: #0f1629; min-width: 200px; border-radius: 12px; padding: 0.5rem 0; border: 1px solid #1e293b; margin-top: 0.5rem; z-index: 100; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a { display: block; padding: 0.5rem 1rem; color: #94a3b8; font-size: 0.85rem; }
+        .dropdown-content a:hover { background: rgba(79,70,229,0.1); color: #4f46e5; }
+        .btn-login { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 0.5rem 1.2rem; border-radius: 30px; color: white !important; }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+        .section-title { text-align: center; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 3rem; }
+        
+        .faq-item { background: rgba(255,255,255,0.02); border: 1px solid #1e293b; border-radius: 16px; margin-bottom: 1rem; overflow: hidden; }
+        .faq-question { padding: 1.2rem 1.5rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s; }
+        .faq-question:hover { background: rgba(79,70,229,0.05); }
+        .faq-question i { transition: transform 0.3s; color: #4f46e5; }
+        .faq-question.active i { transform: rotate(180deg); }
+        .faq-answer { padding: 0 1.5rem; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; color: #94a3b8; line-height: 1.6; }
+        .faq-question.active + .faq-answer { padding: 0 1.5rem 1.2rem; max-height: 300px; }
+        
+        .footer { text-align: center; padding: 3rem; border-top: 1px solid #1e293b; color: #64748b; }
+        @media (max-width: 768px) { .nav { display: none; } .container { padding-top: 6rem; } .section-title { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">SantaBoot</a>
+        <nav class="nav">
+            <a href="/">Producto</a>
+            <a href="/precios.html">Precios</a>
+            <a href="/descargas.html">Descargas</a>
+            <a href="/ecosistemas.html">Ecosistemas</a>
+            <div class="dropdown">
+                <a href="#">Recursos <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/faq.html">Preguntas frecuentes</a>
+                    <a href="/soporte.html">Soporte</a>
+                    <a href="/documentacion.html">Documentación</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#">Legales <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/aviso-legal.html">Aviso legal</a>
+                    <a href="/privacidad.html">Privacidad</a>
+                    <a href="/terminos.html">Términos</a>
+                    <a href="/cookies.html">Cookies</a>
+                </div>
+            </div>
+            <a href="/login.html" class="btn-login">Mi cuenta</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1 class="section-title">Preguntas frecuentes</h1>
+        <p class="section-subtitle">Lo que la mayoría quiere saber antes de probarlo</p>
+        
+        <div class="faq-item">
+            <div class="faq-question">¿Necesito comprar hardware adicional? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">No. SantaBoot funciona con el hardware que ya tienes. Solo necesitas tu PC y un dispositivo compatible con Alexa, Apple Home o Home Assistant.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">¿Qué necesito para que Wake-on-LAN funcione en Windows o Mac? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Solo tener activado Wake-on-LAN en la BIOS y en el sistema operativo. En Windows, también debes habilitarlo en el adaptador de red. El cliente local de SantaBoot se encarga del resto.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">¿Funciona con Home Assistant, Apple Home y Alexa? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Sí. El plan Pro incluye integración con Alexa, Apple Home y Home Assistant. El plan Ultimate añade Matter experimental.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">¿Sirve solo para encender y apagar el PC? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">No. También puedes crear acciones rápidas (abrir programas, enviar teclas), monitorizar sensores (temperatura, CPU, RAM) y ver tu webcam en vivo.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">¿Está pensado solo para usuarios avanzados? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Para nada. La instalación es sencilla y la configuración se hace desde una interfaz amigable. Cualquier persona puede usarlo.</div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>© 2025 SantaBoot — Enciende tu PC con voz</p>
+    </footer>
+    
+    <script>
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => q.classList.toggle('active'));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de cookies — SantaBoot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0f1c; color: #f1f5f9; line-height: 1.5; }
+        
+        .header { position: fixed; top: 0; width: 100%; padding: 1rem 5%; background: rgba(10,15,28,0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid #1e293b; }
+        .logo { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+        .nav a { color: #94a3b8; text-decoration: none; font-weight: 500; transition: color 0.3s; font-size: 0.9rem; }
+        .nav a:hover { color: #4f46e5; }
+        .dropdown { position: relative; }
+        .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: #0f1629; min-width: 200px; border-radius: 12px; padding: 0.5rem 0; border: 1px solid #1e293b; margin-top: 0.5rem; z-index: 100; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a { display: block; padding: 0.5rem 1rem; color: #94a3b8; font-size: 0.85rem; }
+        .dropdown-content a:hover { background: rgba(79,70,229,0.1); color: #4f46e5; }
+        .btn-login { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 0.5rem 1.2rem; border-radius: 30px; color: white !important; }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+        .section-title { font-size: 2rem; font-weight: 700; margin-bottom: 2rem; text-align: center; }
+        .legal-content h2 { font-size: 1.3rem; margin: 1.5rem 0 0.5rem; color: #4f46e5; }
+        .legal-content p { color: #94a3b8; margin-bottom: 1rem; line-height: 1.6; }
+        .cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #0f1629; border-top: 1px solid #1e293b; padding: 1rem; text-align: center; z-index: 1000; }
+        .cookie-banner p { display: inline; margin-right: 1rem; }
+        .cookie-banner button { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 0.5rem 1rem; border-radius: 30px; color: white; border: none; cursor: pointer; }
+        
+        .footer { text-align: center; padding: 3rem; border-top: 1px solid #1e293b; color: #64748b; }
+        @media (max-width: 768px) { .nav { display: none; } .container { padding-top: 6rem; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">SantaBoot</a>
+        <nav class="nav">
+            <a href="/">Producto</a>
+            <a href="/precios.html">Precios</a>
+            <a href="/descargas.html">Descargas</a>
+            <a href="/ecosistemas.html">Ecosistemas</a>
+            <div class="dropdown">
+                <a href="#">Recursos <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/faq.html">Preguntas frecuentes</a>
+                    <a href="/soporte.html">Soporte</a>
+                    <a href="/documentacion.html">Documentación</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#">Legales <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/aviso-legal.html">Aviso legal</a>
+                    <a href="/privacidad.html">Privacidad</a>
+                    <a href="/terminos.html">Términos</a>
+                    <a href="/cookies.html">Cookies</a>
+                </div>
+            </div>
+            <a href="/login.html" class="btn-login">Mi cuenta</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1 class="section-title">Política de cookies</h1>
+        <div class="legal-content">
+            <h2>1. ¿Qué son las cookies?</h2>
+            <p>Las cookies son pequeños archivos de texto que los sitios web colocan en su dispositivo para mejorar la experiencia de usuario.</p>
+            
+            <h2>2. Tipos de cookies que utilizamos</h2>
+            <p><strong>Cookies esenciales:</strong> Necesarias para el funcionamiento básico de la web.</p>
+            <p><strong>Cookies analíticas:</strong> Nos ayudan a entender cómo los usuarios interactúan con nuestra web.</p>
+            
+            <h2>3. Gestionar cookies</h2>
+            <p>Puede gestionar las cookies desde la configuración de su navegador. Sin embargo, deshabilitar cookies esenciales puede afectar el funcionamiento de la web.</p>
+            
+            <h2>4. Cookies de terceros</h2>
+            <p>Utilizamos Stripe para procesar pagos, que puede colocar cookies para mejorar la seguridad y experiencia de pago.</p>
+        </div>
+    </div>
+    
+    <div class="cookie-banner" id="cookieBanner">
+        <p>🍪 Usamos cookies para mejorar tu experiencia.</p>
+        <button onclick="aceptarCookies()">Aceptar</button>
+    </div>
+    
+    <footer class="footer">
+        <p>© 2025 SantaBoot — Enciende tu PC con voz</p>
+    </footer>
+    
+    <script>
+        if (localStorage.getItem('cookiesAceptadas')) {
+            document.getElementById('cookieBanner').style.display = 'none';
+        }
+        
+        function aceptarCookies() {
+            localStorage.setItem('cookiesAceptadas', 'true');
+            document.getElementById('cookieBanner').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

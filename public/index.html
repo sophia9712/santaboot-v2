@@ -15,31 +15,22 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
+            background: #0a0f1c;
+            color: #f1f5f9;
             line-height: 1.5;
             overflow-x: hidden;
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        ::-webkit-scrollbar-track {
+            background: #0f1629;
         }
-
-        .animate-fade-up {
-            animation: fadeInUp 0.8s ease-out forwards;
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5;
+            border-radius: 4px;
         }
 
         /* Header */
@@ -48,19 +39,19 @@
             top: 0;
             width: 100%;
             padding: 1rem 5%;
-            background: rgba(10, 10, 10, 0.95);
+            background: rgba(10, 15, 28, 0.95);
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid #1e293b;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
@@ -73,15 +64,15 @@
         }
 
         .nav a {
-            color: #e0e0e0;
+            color: #94a3b8;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .nav a:hover {
-            color: #667eea;
+            color: #4f46e5;
         }
 
         .dropdown {
@@ -93,12 +84,13 @@
             position: absolute;
             top: 100%;
             left: 0;
-            background: #1a1a1a;
+            background: #0f1629;
             min-width: 200px;
             border-radius: 12px;
             padding: 0.5rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid #1e293b;
             margin-top: 0.5rem;
+            z-index: 100;
         }
 
         .dropdown:hover .dropdown-content {
@@ -108,15 +100,17 @@
         .dropdown-content a {
             display: block;
             padding: 0.5rem 1rem;
-            color: #e0e0e0;
+            color: #94a3b8;
+            font-size: 0.85rem;
         }
 
         .dropdown-content a:hover {
-            background: rgba(102, 126, 234, 0.2);
+            background: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
         }
 
         .btn-login {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
             padding: 0.5rem 1.2rem;
             border-radius: 30px;
             color: white !important;
@@ -131,7 +125,6 @@
             padding: 0 5%;
             gap: 4rem;
             position: relative;
-            overflow: hidden;
         }
 
         .hero::before {
@@ -141,7 +134,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15), transparent);
+            background: radial-gradient(circle at 20% 50%, rgba(79, 70, 229, 0.15), transparent);
             pointer-events: none;
         }
 
@@ -152,27 +145,27 @@
 
         .hero-badge {
             display: inline-block;
-            background: rgba(102, 126, 234, 0.2);
+            background: rgba(79, 70, 229, 0.15);
             padding: 0.3rem 1rem;
             border-radius: 30px;
             font-size: 0.8rem;
-            color: #667eea;
+            color: #4f46e5;
             margin-bottom: 1.5rem;
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: 3.8rem;
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #ffffff, #a0aec0);
+            background: linear-gradient(135deg, #ffffff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 1.2rem;
-            color: #b0b0b0;
+            font-size: 1.1rem;
+            color: #94a3b8;
             margin-bottom: 2rem;
             max-width: 500px;
         }
@@ -183,7 +176,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
             padding: 0.8rem 2rem;
             border-radius: 40px;
             color: white;
@@ -195,22 +188,23 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #1e293b;
             padding: 0.8rem 2rem;
             border-radius: 40px;
             color: white;
             text-decoration: none;
             font-weight: 600;
             transition: background 0.3s;
-            display: inline-block;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(79, 70, 229, 0.1);
+            border-color: #4f46e5;
         }
 
         .hero-video {
@@ -228,7 +222,7 @@
         /* Features Section */
         .features {
             padding: 6rem 5%;
-            background: #0f0f0f;
+            background: #0f1629;
         }
 
         .section-title {
@@ -240,7 +234,7 @@
 
         .section-subtitle {
             text-align: center;
-            color: #b0b0b0;
+            color: #94a3b8;
             margin-bottom: 3rem;
             max-width: 600px;
             margin-left: auto;
@@ -256,8 +250,8 @@
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #1e293b;
             border-radius: 20px;
             padding: 2rem;
             transition: transform 0.3s, border-color 0.3s;
@@ -265,13 +259,13 @@
 
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(102, 126, 234, 0.5);
+            border-color: #4f46e5;
         }
 
         .feature-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
             border-radius: 16px;
             display: flex;
             align-items: center;
@@ -289,7 +283,7 @@
         }
 
         .feature-card p {
-            color: #b0b0b0;
+            color: #94a3b8;
             font-size: 0.9rem;
             line-height: 1.6;
         }
@@ -297,7 +291,7 @@
         /* How It Works */
         .how-it-works {
             padding: 6rem 5%;
-            background: #0a0a0a;
+            background: #0a0f1c;
         }
 
         .steps {
@@ -318,7 +312,7 @@
         .step-number {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -330,17 +324,18 @@
 
         .step h3 {
             margin-bottom: 0.5rem;
+            font-size: 1.2rem;
         }
 
         .step p {
-            color: #b0b0b0;
+            color: #94a3b8;
             font-size: 0.9rem;
         }
 
         /* Integrations */
         .integrations {
             padding: 6rem 5%;
-            background: #0f0f0f;
+            background: #0f1629;
             text-align: center;
         }
 
@@ -359,7 +354,7 @@
 
         .integration i {
             font-size: 3rem;
-            color: #667eea;
+            color: #4f46e5;
             margin-bottom: 0.5rem;
         }
 
@@ -371,7 +366,7 @@
         /* Pricing */
         .pricing {
             padding: 6rem 5%;
-            background: #0a0a0a;
+            background: #0a0f1c;
         }
 
         .pricing-grid {
@@ -384,8 +379,8 @@
         }
 
         .plan {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #1e293b;
             border-radius: 24px;
             padding: 2rem;
             width: 320px;
@@ -395,12 +390,12 @@
 
         .plan:hover {
             transform: translateY(-5px);
-            border-color: rgba(102, 126, 234, 0.5);
+            border-color: #4f46e5;
         }
 
         .plan.popular {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border-color: rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
+            border-color: #4f46e5;
         }
 
         .popular-badge {
@@ -429,7 +424,7 @@
         .price span {
             font-size: 1rem;
             font-weight: normal;
-            color: #b0b0b0;
+            color: #94a3b8;
         }
 
         .plan-features {
@@ -439,7 +434,7 @@
 
         .plan-features li {
             padding: 0.5rem 0;
-            color: #b0b0b0;
+            color: #94a3b8;
         }
 
         .plan-features li i {
@@ -464,21 +459,23 @@
             width: 100%;
             padding: 0.8rem;
             border-radius: 40px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #1e293b;
             color: white;
             text-decoration: none;
             font-weight: 600;
-            transition: background 0.3s;
+            transition: all 0.3s;
         }
 
         .plan .btn:hover {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-color: transparent;
         }
 
         /* FAQ */
         .faq {
             padding: 6rem 5%;
-            background: #0f0f0f;
+            background: #0f1629;
         }
 
         .faq-grid {
@@ -487,8 +484,8 @@
         }
 
         .faq-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #1e293b;
             border-radius: 16px;
             margin-bottom: 1rem;
             overflow: hidden;
@@ -505,11 +502,12 @@
         }
 
         .faq-question:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(79, 70, 229, 0.05);
         }
 
         .faq-question i {
             transition: transform 0.3s;
+            color: #4f46e5;
         }
 
         .faq-question.active i {
@@ -521,7 +519,7 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
-            color: #b0b0b0;
+            color: #94a3b8;
         }
 
         .faq-question.active + .faq-answer {
@@ -533,7 +531,7 @@
         .cta {
             text-align: center;
             padding: 6rem 5%;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
         }
 
         .cta h2 {
@@ -542,7 +540,7 @@
         }
 
         .cta p {
-            color: #b0b0b0;
+            color: #94a3b8;
             margin-bottom: 2rem;
             max-width: 600px;
             margin-left: auto;
@@ -552,7 +550,7 @@
         /* Footer */
         .footer {
             padding: 4rem 5% 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid #1e293b;
         }
 
         .footer-grid {
@@ -563,14 +561,14 @@
         }
 
         .footer-column h4 {
-            color: #667eea;
+            color: #4f46e5;
             margin-bottom: 1rem;
             font-size: 1rem;
         }
 
         .footer-column a {
             display: block;
-            color: #b0b0b0;
+            color: #94a3b8;
             text-decoration: none;
             margin-bottom: 0.5rem;
             font-size: 0.85rem;
@@ -578,14 +576,14 @@
         }
 
         .footer-column a:hover {
-            color: white;
+            color: #4f46e5;
         }
 
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: #666;
+            border-top: 1px solid #1e293b;
+            color: #64748b;
             font-size: 0.8rem;
         }
 
@@ -624,10 +622,10 @@
     <header class="header">
         <a href="/" class="logo">SantaBoot</a>
         <nav class="nav">
-            <a href="#producto">Producto</a>
+            <a href="/">Producto</a>
             <a href="/precios.html">Precios</a>
             <a href="/descargas.html">Descargas</a>
-            <a href="#ecosistemas">Ecosistemas</a>
+            <a href="/ecosistemas.html">Ecosistemas</a>
             <div class="dropdown">
                 <a href="#">Recursos <i class="fas fa-chevron-down"></i></a>
                 <div class="dropdown-content">
@@ -639,7 +637,7 @@
             <div class="dropdown">
                 <a href="#">Legales <i class="fas fa-chevron-down"></i></a>
                 <div class="dropdown-content">
-                    <a href="/privacidad.html">Aviso legal</a>
+                    <a href="/aviso-legal.html">Aviso legal</a>
                     <a href="/privacidad.html">Privacidad</a>
                     <a href="/terminos.html">Términos</a>
                     <a href="/cookies.html">Cookies</a>
@@ -650,7 +648,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" id="producto">
+    <section class="hero">
         <div class="hero-content">
             <div class="hero-badge">
                 <i class="fas fa-microphone"></i> Control por voz
@@ -664,12 +662,13 @@
         </div>
         <div class="hero-video">
             <video autoplay loop muted playsinline>
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-person-using-a-smart-home-device-40418-large.mp4" type="video/mp4">
+                <source src="https://cdn.pixabay.com/video/2023/06/20/169256-836953433_large.mp4" type="video/mp4">
+                Tu navegador no soporta el elemento de video.
             </video>
         </div>
     </section>
 
-    <!-- Features -->
+    <!-- Features Section -->
     <section class="features">
         <h2 class="section-title">Todo lo que puedes hacer</h2>
         <p class="section-subtitle">SantaBoot transforma tu PC en el centro de tu casa inteligente</p>
@@ -731,7 +730,7 @@
     </section>
 
     <!-- Integrations -->
-    <section class="integrations" id="ecosistemas">
+    <section class="integrations">
         <h2 class="section-title">Funciona con los ecosistemas que ya usas</h2>
         <div class="integrations-grid">
             <div class="integration">
@@ -754,7 +753,7 @@
     </section>
 
     <!-- Pricing -->
-    <section class="pricing" id="precios">
+    <section class="pricing">
         <h2 class="section-title">Elige cuánto quieres hacer con tu PC</h2>
         <p class="section-subtitle">Precios especiales de lanzamiento por tiempo limitado</p>
         <div class="pricing-grid">
@@ -804,7 +803,7 @@
     </section>
 
     <!-- FAQ -->
-    <section class="faq" id="faq">
+    <section class="faq">
         <h2 class="section-title">Preguntas frecuentes</h2>
         <div class="faq-grid">
             <div class="faq-item">
@@ -819,7 +818,7 @@
                     ¿Qué necesito para que Wake-on-LAN funcione?
                     <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="faq-answer">Solo tener activado Wake-on-LAN en la BIOS y en Windows. El cliente local se encarga del resto. El cliente local debe ejecutarse en segundo plano.</div>
+                <div class="faq-answer">Solo tener activado Wake-on-LAN en la BIOS y en Windows. El cliente local se encarga del resto.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
@@ -857,10 +856,10 @@
         <div class="footer-grid">
             <div class="footer-column">
                 <h4>Producto</h4>
-                <a href="#producto">Características</a>
+                <a href="/">Características</a>
                 <a href="/precios.html">Precios</a>
                 <a href="/descargas.html">Descargas</a>
-                <a href="#ecosistemas">Ecosistemas</a>
+                <a href="/ecosistemas.html">Ecosistemas</a>
             </div>
             <div class="footer-column">
                 <h4>Recursos</h4>
@@ -870,7 +869,7 @@
             </div>
             <div class="footer-column">
                 <h4>Legales</h4>
-                <a href="/privacidad.html">Aviso legal</a>
+                <a href="/aviso-legal.html">Aviso legal</a>
                 <a href="/privacidad.html">Política de privacidad</a>
                 <a href="/terminos.html">Términos de uso</a>
                 <a href="/cookies.html">Política de cookies</a>

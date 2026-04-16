@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación — SantaBoot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0f1c; color: #f1f5f9; line-height: 1.5; }
+        
+        .header { position: fixed; top: 0; width: 100%; padding: 1rem 5%; background: rgba(10,15,28,0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid #1e293b; }
+        .logo { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+        .nav a { color: #94a3b8; text-decoration: none; font-weight: 500; transition: color 0.3s; font-size: 0.9rem; }
+        .nav a:hover { color: #4f46e5; }
+        .dropdown { position: relative; }
+        .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: #0f1629; min-width: 200px; border-radius: 12px; padding: 0.5rem 0; border: 1px solid #1e293b; margin-top: 0.5rem; z-index: 100; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a { display: block; padding: 0.5rem 1rem; color: #94a3b8; font-size: 0.85rem; }
+        .dropdown-content a:hover { background: rgba(79,70,229,0.1); color: #4f46e5; }
+        .btn-login { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 0.5rem 1.2rem; border-radius: 30px; color: white !important; }
+        
+        .container { max-width: 1000px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+        .section-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; text-align: center; }
+        .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 3rem; }
+        
+        .doc-section { margin-bottom: 2rem; background: rgba(255,255,255,0.02); border: 1px solid #1e293b; border-radius: 16px; overflow: hidden; }
+        .doc-title { padding: 1rem 1.5rem; background: rgba(79,70,229,0.1); font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .doc-title i { transition: transform 0.3s; }
+        .doc-title.active i { transform: rotate(180deg); }
+        .doc-content { padding: 0 1.5rem; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; color: #94a3b8; }
+        .doc-title.active + .doc-content { padding: 1rem 1.5rem 1.5rem; max-height: 500px; }
+        .doc-content p { margin-bottom: 0.5rem; }
+        .doc-content code { background: rgba(255,255,255,0.05); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; }
+        
+        .footer { text-align: center; padding: 3rem; border-top: 1px solid #1e293b; color: #64748b; }
+        @media (max-width: 768px) { .nav { display: none; } .container { padding-top: 6rem; } .section-title { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">SantaBoot</a>
+        <nav class="nav">
+            <a href="/">Producto</a>
+            <a href="/precios.html">Precios</a>
+            <a href="/descargas.html">Descargas</a>
+            <a href="/ecosistemas.html">Ecosistemas</a>
+            <div class="dropdown">
+                <a href="#">Recursos <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/faq.html">Preguntas frecuentes</a>
+                    <a href="/soporte.html">Soporte</a>
+                    <a href="/documentacion.html">Documentación</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#">Legales <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/aviso-legal.html">Aviso legal</a>
+                    <a href="/privacidad.html">Privacidad</a>
+                    <a href="/terminos.html">Términos</a>
+                    <a href="/cookies.html">Cookies</a>
+                </div>
+            </div>
+            <a href="/login.html" class="btn-login">Mi cuenta</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1 class="section-title">Documentación</h1>
+        <p class="section-subtitle">Guías y tutoriales para sacar el máximo partido a SantaBoot</p>
+        
+        <div class="doc-section">
+            <div class="doc-title">📥 Instalación del cliente <i class="fas fa-chevron-down"></i></div>
+            <div class="doc-content">
+                <p>1. Descarga el archivo <code>SantaBootClient.zip</code> desde la sección de <a href="/descargas.html">Descargas</a>.</p>
+                <p>2. Descomprime el archivo en una carpeta de tu PC.</p>
+                <p>3. Ejecuta <code>instalar.bat</code> como administrador.</p>
+                <p>4. Espera a que se instalen las dependencias (solo la primera vez).</p>
+                <p>5. Ejecuta <code>iniciar.bat</code> para arrancar el cliente.</p>
+                <p>6. El cliente se minimizará a la bandeja del sistema.</p>
+            </div>
+        </div>
+        
+        <div class="doc-section">
+            <div class="doc-title">🔧 Configuración de Wake-on-LAN <i class="fas fa-chevron-down"></i></div>
+            <div class="doc-content">
+                <p><strong>En Windows:</strong></p>
+                <p>1. Abre el Administrador de dispositivos.</p>
+                <p>2. Ve a Adaptadores de red → selecciona tu tarjeta → Propiedades.</p>
+                <p>3. En la pestaña "Opciones avanzadas", activa "Wake on Magic Packet".</p>
+                <p>4. En la pestaña "Administración de energía", marca "Permitir que este dispositivo reactive el equipo".</p>
+                <p><strong>En BIOS/UEFI:</strong></p>
+                <p>1. Reinicia y entra en la BIOS (F2, Supr, F10, etc.).</p>
+                <p>2. Busca "Wake on LAN" o "Power On by PCIe" y actívalo.</p>
+                <p>3. Guarda los cambios y reinicia.</p>
+            </div>
+        </div>
+        
+        <div class="doc-section">
+            <div class="doc-title">🎤 Comandos de voz para Alexa <i class="fas fa-chevron-down"></i></div>
+            <div class="doc-content">
+                <p><code>"Alexa, abre SantaBoot"</code> - Abre la skill.</p>
+                <p><code>"Alexa, enciende mi PC"</code> - Enciende tu computadora.</p>
+                <p><code>"Alexa, apaga mi PC"</code> - Apaga tu computadora.</p>
+                <p><code>"Alexa, ¿cómo está mi PC?"</code> - Muestra sensores (CPU, RAM, temperatura).</p>
+                <p><code>"Alexa, qué PCs tengo"</code> - Lista tus PCs registrados.</p>
+            </div>
+        </div>
+        
+        <div class="doc-section">
+            <div class="doc-title">🖥️ Comandos de voz para Apple Home <i class="fas fa-chevron-down"></i></div>
+            <div class="doc-content">
+                <p><code>"Hey Siri, enciende mi PC"</code> - Enciende tu computadora.</p>
+                <p><code>"Hey Siri, apaga mi PC"</code> - Apaga tu computadora.</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>© 2025 SantaBoot — Enciende tu PC con voz</p>
+    </footer>
+    
+    <script>
+        document.querySelectorAll('.doc-title').forEach(title => {
+            title.addEventListener('click', () => {
+                title.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

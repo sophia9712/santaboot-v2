@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargas — SantaBoot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0f1c; color: #f1f5f9; line-height: 1.5; }
+        
+        .header { position: fixed; top: 0; width: 100%; padding: 1rem 5%; background: rgba(10,15,28,0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid #1e293b; }
+        .logo { font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+        .nav a { color: #94a3b8; text-decoration: none; font-weight: 500; transition: color 0.3s; font-size: 0.9rem; }
+        .nav a:hover { color: #4f46e5; }
+        .dropdown { position: relative; }
+        .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: #0f1629; min-width: 200px; border-radius: 12px; padding: 0.5rem 0; border: 1px solid #1e293b; margin-top: 0.5rem; z-index: 100; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a { display: block; padding: 0.5rem 1rem; color: #94a3b8; font-size: 0.85rem; }
+        .dropdown-content a:hover { background: rgba(79,70,229,0.1); color: #4f46e5; }
+        .btn-login { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 0.5rem 1.2rem; border-radius: 30px; color: white !important; }
+        
+        .container { max-width: 1000px; margin: 0 auto; padding: 8rem 2rem 4rem; text-align: center; }
+        .section-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .section-subtitle { color: #94a3b8; margin-bottom: 3rem; }
+        
+        .download-card { background: rgba(255,255,255,0.02); border: 1px solid #1e293b; border-radius: 24px; padding: 2rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .download-info { text-align: left; }
+        .download-info h3 { margin-bottom: 0.5rem; font-size: 1.3rem; }
+        .download-info p { color: #94a3b8; font-size: 0.9rem; }
+        .download-btn { background: linear-gradient(135deg, #4f46e5, #7c3aed); padding: 0.8rem 2rem; border-radius: 40px; color: white; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.3s; }
+        .download-btn:hover { transform: translateY(-2px); }
+        
+        .instructions { background: rgba(255,255,255,0.02); border: 1px solid #1e293b; border-radius: 20px; padding: 2rem; text-align: left; margin-top: 2rem; }
+        .instructions h3 { margin-bottom: 1rem; color: #4f46e5; }
+        .instructions ol { padding-left: 1.5rem; color: #94a3b8; }
+        .instructions li { margin-bottom: 0.5rem; }
+        
+        .footer { text-align: center; padding: 3rem; border-top: 1px solid #1e293b; color: #64748b; }
+        @media (max-width: 768px) { .nav { display: none; } .container { padding-top: 6rem; } .section-title { font-size: 2rem; } .download-card { flex-direction: column; text-align: center; } .download-info { text-align: center; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">SantaBoot</a>
+        <nav class="nav">
+            <a href="/">Producto</a>
+            <a href="/precios.html">Precios</a>
+            <a href="/descargas.html">Descargas</a>
+            <a href="/ecosistemas.html">Ecosistemas</a>
+            <div class="dropdown">
+                <a href="#">Recursos <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/faq.html">Preguntas frecuentes</a>
+                    <a href="/soporte.html">Soporte</a>
+                    <a href="/documentacion.html">Documentación</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#">Legales <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/aviso-legal.html">Aviso legal</a>
+                    <a href="/privacidad.html">Privacidad</a>
+                    <a href="/terminos.html">Términos</a>
+                    <a href="/cookies.html">Cookies</a>
+                </div>
+            </div>
+            <a href="/login.html" class="btn-login">Mi cuenta</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1 class="section-title">Descarga SantaBoot Client</h1>
+        <p class="section-subtitle">El programa que conecta tu PC con los asistentes de voz</p>
+        
+        <div class="download-card">
+            <div class="download-info">
+                <h3><i class="fab fa-windows"></i> SantaBoot Client para Windows</h3>
+                <p>Compatible con Windows 10 y 11. Versión 2.0.0</p>
+            </div>
+            <a href="#" class="download-btn" id="downloadBtn"><i class="fas fa-download"></i> Descargar</a>
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Instrucciones de instalación</h3>
+            <ol>
+                <li>Descarga el archivo <strong>SantaBootClient.zip</strong></li>
+                <li>Descomprime el archivo en una carpeta de tu PC</li>
+                <li>Ejecuta <strong>instalar.bat</strong> como administrador</li>
+                <li>Espera a que se instalen las dependencias</li>
+                <li>Ejecuta <strong>iniciar.bat</strong> para arrancar el cliente</li>
+                <li>El cliente se ejecutará en segundo plano</li>
+            </ol>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>© 2025 SantaBoot — Enciende tu PC con voz</p>
+    </footer>
+    
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('El cliente local está en desarrollo. Pronto estará disponible para descarga.');
+        });
+    </script>
+</body>
+</html>
