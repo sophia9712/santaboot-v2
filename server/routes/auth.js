@@ -89,7 +89,7 @@ router.post('/upgrade-to-premium', async (req, res) => {
 // === VINCULACIÓN AUTOMÁTICA CON ALEXA (OAuth2) ===
 // ============================================================
 const CLIENT_ID = 'santaboot-alexa-client';
-const CLIENT_SECRET = process.env.ALEXA_CLIENT_SECRET || 'Sb00t_7xK9mP2vL4nQ8wR5yT1cF6hJ3dG0aE';
+const CLIENT_SECRET = process.env.ALEXA_CLIENT_SECRET || 'SantaBoot2026SecretXYZ';
 
 // Log para verificar que se cargó el secreto
 console.log('🔐 CLIENT_SECRET cargado:', CLIENT_SECRET ? '✅ Sí (' + CLIENT_SECRET.length + ' chars)' : '❌ No');
