@@ -1,40 +1,25 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+const path = require('path');
 
 const app = express();
+const PORT = process.env.PORT || 8080;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // ← ← ← AGREGA ESTA LÍNEA
-app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '../public')));
 
-// Redirecciones amigables
-app.get('/dashboard', (req, res) => res.redirect('/dashboard.html'));
-app.get('/register', (req, res) => res.redirect('/register.html'));
-app.get('/login', (req, res) => res.redirect('/login.html'));
-app.get('/privacy', (req, res) => res.redirect('/privacy.html'));
-app.get('/terms', (req, res) => res.redirect('/terms.html'));
+app.use('/auth', require('./routes/auth'));
+app.use('/devices', require('./routes/devices'));
+app.use('/payments', require('./routes/payments'));
+app.use('/alexa', require('./routes/alexa'));  // ← Ruta /alexa/wake
 
-// Importar rutas
-const authRoutes = require('./routes/auth');
-const deviceRoutes = require('./routes/devices');
-const alexaRoutes = require('./routes/alexa');
-const paymentRoutes = require('./routes/payments');
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
-// Usar rutas
-app.use('/auth', authRoutes);
-app.use('/devices', deviceRoutes);
-app.use('/alexa', alexaRoutes);
-app.use('/payments', paymentRoutes);
-
-// Health check
-app.get('/', (req, res) => res.json({ message: 'SantaBoot API funcionando' }));
-app.get('/health', (req, res) => res.json({ status: 'ok' }));
-
-// Puerto
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log('🚀 SantaBoot corriendo en puerto ' + PORT);
+app.listen(PORT, () => {
+    console.log(`🚀 SantaBoot corriendo en puerto ${PORT}`);
+    console.log(`📍 Endpoint para Alexa: https://santaboot-production.up.railway.app/alexa/wake`);
 });
