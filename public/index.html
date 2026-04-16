@@ -12,7 +12,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a0a;
@@ -20,8 +20,8 @@
             line-height: 1.5;
             overflow-x: hidden;
         }
-        
-        /* Animaciones */
+
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -32,66 +32,96 @@
                 transform: translateY(0);
             }
         }
-        
-        @keyframes glow {
-            0% { box-shadow: 0 0 5px rgba(102,126,234,0.5); }
-            100% { box-shadow: 0 0 20px rgba(102,126,234,0.8); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        
-        .animate {
+
+        .animate-fade-up {
             animation: fadeInUp 0.8s ease-out forwards;
         }
-        
+
         /* Header */
         .header {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1.2rem 5%;
-            background: rgba(10,10,10,0.95);
+            padding: 1rem 5%;
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
             background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-decoration: none;
         }
-        
+
         .nav {
             display: flex;
             gap: 2rem;
             align-items: center;
         }
-        
+
         .nav a {
             color: #e0e0e0;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            font-size: 0.95rem;
         }
-        
+
         .nav a:hover {
             color: #667eea;
         }
-        
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #1a1a1a;
+            min-width: 200px;
+            border-radius: 12px;
+            padding: 0.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 0.5rem;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #e0e0e0;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
         .btn-login {
-            background: rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             padding: 0.5rem 1.2rem;
             border-radius: 30px;
+            color: white !important;
         }
-        
-        .btn-login:hover {
-            background: rgba(102,126,234,0.3);
-        }
-        
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -100,46 +130,58 @@
             justify-content: space-between;
             padding: 0 5%;
             gap: 4rem;
-            background: radial-gradient(circle at 20% 50%, rgba(102,126,234,0.15), transparent);
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15), transparent);
+            pointer-events: none;
+        }
+
         .hero-content {
             flex: 1;
-            animation: fadeInUp 0.6s ease-out;
+            z-index: 1;
         }
-        
+
         .hero-badge {
             display: inline-block;
-            background: rgba(102,126,234,0.2);
+            background: rgba(102, 126, 234, 0.2);
             padding: 0.3rem 1rem;
             border-radius: 30px;
             font-size: 0.8rem;
             color: #667eea;
             margin-bottom: 1.5rem;
         }
-        
+
         .hero h1 {
             font-size: 4rem;
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #fff, #a0aec0);
+            background: linear-gradient(135deg, #ffffff, #a0aec0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         .hero p {
             font-size: 1.2rem;
             color: #b0b0b0;
             margin-bottom: 2rem;
             max-width: 500px;
         }
-        
+
         .hero-buttons {
             display: flex;
             gap: 1rem;
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #667eea, #764ba2);
             padding: 0.8rem 2rem;
@@ -148,109 +190,116 @@
             text-decoration: none;
             font-weight: 600;
             transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102,126,234,0.4);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
         }
-        
+
         .btn-secondary {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             padding: 0.8rem 2rem;
             border-radius: 40px;
             color: white;
             text-decoration: none;
             font-weight: 600;
             transition: background 0.3s;
+            display: inline-block;
         }
-        
+
         .btn-secondary:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
         }
-        
+
         .hero-video {
             flex: 1;
             position: relative;
+            z-index: 1;
         }
-        
+
         .hero-video video {
             width: 100%;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
-        
-        /* Features */
+
+        /* Features Section */
         .features {
             padding: 6rem 5%;
             background: #0f0f0f;
         }
-        
+
         .section-title {
             text-align: center;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 1rem;
         }
-        
+
         .section-subtitle {
             text-align: center;
             color: #b0b0b0;
             margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        
+
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .feature-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             padding: 2rem;
-            text-align: center;
             transition: transform 0.3s, border-color 0.3s;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(102,126,234,0.5);
+            border-color: rgba(102, 126, 234, 0.5);
         }
-        
+
         .feature-icon {
             width: 60px;
             height: 60px;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 20px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.5rem;
+            margin-bottom: 1.5rem;
         }
-        
+
         .feature-icon i {
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
-        
+
         .feature-card h3 {
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
         }
-        
+
         .feature-card p {
             color: #b0b0b0;
             font-size: 0.9rem;
+            line-height: 1.6;
         }
-        
+
         /* How It Works */
         .how-it-works {
             padding: 6rem 5%;
-            background: linear-gradient(180deg, #0a0a0a, #0f0f0f);
+            background: #0a0a0a;
         }
-        
+
         .steps {
             display: flex;
             justify-content: center;
@@ -259,13 +308,13 @@
             max-width: 1000px;
             margin: 0 auto;
         }
-        
+
         .step {
             text-align: center;
             flex: 1;
             min-width: 200px;
         }
-        
+
         .step-number {
             width: 60px;
             height: 60px;
@@ -278,52 +327,53 @@
             font-weight: bold;
             margin: 0 auto 1rem;
         }
-        
+
         .step h3 {
             margin-bottom: 0.5rem;
         }
-        
+
         .step p {
             color: #b0b0b0;
             font-size: 0.9rem;
         }
-        
+
         /* Integrations */
         .integrations {
             padding: 6rem 5%;
-            background: #0a0a0a;
+            background: #0f0f0f;
+            text-align: center;
         }
-        
+
         .integrations-grid {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 3rem;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 2rem auto 0;
         }
-        
+
         .integration {
             text-align: center;
         }
-        
+
         .integration i {
-            font-size: 4rem;
+            font-size: 3rem;
             color: #667eea;
             margin-bottom: 0.5rem;
         }
-        
+
         .integration span {
             display: block;
             font-weight: 500;
         }
-        
+
         /* Pricing */
         .pricing {
             padding: 6rem 5%;
-            background: #0f0f0f;
+            background: #0a0a0a;
         }
-        
+
         .pricing-grid {
             display: flex;
             justify-content: center;
@@ -332,27 +382,27 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .plan {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 24px;
             padding: 2rem;
-            width: 300px;
+            width: 320px;
             transition: transform 0.3s;
             position: relative;
         }
-        
+
         .plan:hover {
             transform: translateY(-5px);
-            border-color: rgba(102,126,234,0.5);
+            border-color: rgba(102, 126, 234, 0.5);
         }
-        
+
         .plan.popular {
-            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
-            border-color: rgba(102,126,234,0.5);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-color: rgba(102, 126, 234, 0.5);
         }
-        
+
         .popular-badge {
             position: absolute;
             top: -12px;
@@ -364,83 +414,86 @@
             font-size: 0.8rem;
             font-weight: 600;
         }
-        
+
         .plan h3 {
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
         }
-        
+
         .price {
             font-size: 3rem;
             font-weight: 800;
             margin: 1rem 0;
         }
-        
+
         .price span {
             font-size: 1rem;
             font-weight: normal;
             color: #b0b0b0;
         }
-        
+
         .plan-features {
             list-style: none;
             margin: 1.5rem 0;
         }
-        
+
         .plan-features li {
             padding: 0.5rem 0;
             color: #b0b0b0;
         }
-        
+
         .plan-features li i {
-            color: #10b981;
             margin-right: 0.5rem;
         }
-        
-        .plan-features li.disabled i {
+
+        .plan-features li .fa-check {
+            color: #10b981;
+        }
+
+        .plan-features li .fa-times {
             color: #ef4444;
         }
-        
+
         .plan-features li.disabled {
             color: #555;
         }
-        
+
         .plan .btn {
             display: block;
             text-align: center;
             width: 100%;
             padding: 0.8rem;
             border-radius: 40px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             text-decoration: none;
             font-weight: 600;
             transition: background 0.3s;
         }
-        
+
         .plan .btn:hover {
             background: linear-gradient(135deg, #667eea, #764ba2);
         }
-        
+
         /* FAQ */
         .faq {
             padding: 6rem 5%;
-            background: #0a0a0a;
+            background: #0f0f0f;
         }
-        
+
         .faq-grid {
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .faq-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 16px;
             margin-bottom: 1rem;
             overflow: hidden;
         }
-        
+
         .faq-question {
             padding: 1.2rem 1.5rem;
             font-weight: 600;
@@ -448,16 +501,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background 0.3s;
         }
-        
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
         .faq-question i {
             transition: transform 0.3s;
         }
-        
+
         .faq-question.active i {
             transform: rotate(180deg);
         }
-        
+
         .faq-answer {
             padding: 0 1.5rem;
             max-height: 0;
@@ -465,40 +523,97 @@
             transition: max-height 0.3s ease-out;
             color: #b0b0b0;
         }
-        
+
         .faq-question.active + .faq-answer {
             padding: 0 1.5rem 1.2rem;
             max-height: 200px;
         }
-        
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 6rem 5%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         /* Footer */
         .footer {
-            padding: 3rem 5%;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-            color: #666;
+            padding: 4rem 5% 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h4 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #b0b0b0;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #666;
+            font-size: 0.8rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
             .hero {
                 flex-direction: column;
                 text-align: center;
                 padding-top: 100px;
             }
-            
+
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
             .hero-buttons {
                 justify-content: center;
             }
-            
-            .nav {
-                display: none;
-            }
-            
+
             .section-title {
                 font-size: 2rem;
             }
@@ -507,18 +622,35 @@
 </head>
 <body>
     <header class="header">
-        <div class="logo">SantaBoot</div>
+        <a href="/" class="logo">SantaBoot</a>
         <nav class="nav">
-            <a href="#features">Características</a>
-            <a href="#como-funciona">Cómo funciona</a>
-            <a href="#precios">Precios</a>
-            <a href="#faq">FAQ</a>
-            <a href="/dashboard.html" class="btn-login">Mi cuenta</a>
+            <a href="#producto">Producto</a>
+            <a href="/precios.html">Precios</a>
+            <a href="/descargas.html">Descargas</a>
+            <a href="#ecosistemas">Ecosistemas</a>
+            <div class="dropdown">
+                <a href="#">Recursos <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/faq.html">Preguntas frecuentes</a>
+                    <a href="/soporte.html">Soporte</a>
+                    <a href="/documentacion.html">Documentación</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#">Legales <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="/privacidad.html">Aviso legal</a>
+                    <a href="/privacidad.html">Privacidad</a>
+                    <a href="/terminos.html">Términos</a>
+                    <a href="/cookies.html">Cookies</a>
+                </div>
+            </div>
+            <a href="/login.html" class="btn-login">Mi cuenta</a>
         </nav>
     </header>
-    
-    <!-- Hero -->
-    <section class="hero">
+
+    <!-- Hero Section -->
+    <section class="hero" id="producto">
         <div class="hero-content">
             <div class="hero-badge">
                 <i class="fas fa-microphone"></i> Control por voz
@@ -526,19 +658,19 @@
             <h1>Enciende tu PC<br>con la voz</h1>
             <p>SantaBoot conecta tu computadora con Alexa, Apple Home y Home Assistant. Sin hardware extra, sin complicaciones.</p>
             <div class="hero-buttons">
-                <a href="/dashboard.html" class="btn-primary">Empezar gratis</a>
-                <a href="#como-funciona" class="btn-secondary">Ver demo</a>
+                <a href="/register.html" class="btn-primary">Empezar gratis</a>
+                <a href="/descargas.html" class="btn-secondary">Descargar cliente</a>
             </div>
         </div>
         <div class="hero-video">
             <video autoplay loop muted playsinline>
-                <source src="https://cdn.pixabay.com/video/2023/06/20/169256-836953433_large.mp4" type="video/mp4">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-person-using-a-smart-home-device-40418-large.mp4" type="video/mp4">
             </video>
         </div>
     </section>
-    
+
     <!-- Features -->
-    <section id="features" class="features">
+    <section class="features">
         <h2 class="section-title">Todo lo que puedes hacer</h2>
         <p class="section-subtitle">SantaBoot transforma tu PC en el centro de tu casa inteligente</p>
         <div class="features-grid">
@@ -574,9 +706,9 @@
             </div>
         </div>
     </section>
-    
+
     <!-- How It Works -->
-    <section id="como-funciona" class="how-it-works">
+    <section class="how-it-works">
         <h2 class="section-title">Empieza en minutos</h2>
         <p class="section-subtitle">Sin reemplazar tu setup actual ni montar una infraestructura complicada</p>
         <div class="steps">
@@ -597,9 +729,9 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Integrations -->
-    <section class="integrations">
+    <section class="integrations" id="ecosistemas">
         <h2 class="section-title">Funciona con los ecosistemas que ya usas</h2>
         <div class="integrations-grid">
             <div class="integration">
@@ -620,10 +752,11 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Pricing -->
-    <section id="precios" class="pricing">
+    <section class="pricing" id="precios">
         <h2 class="section-title">Elige cuánto quieres hacer con tu PC</h2>
+        <p class="section-subtitle">Precios especiales de lanzamiento por tiempo limitado</p>
         <div class="pricing-grid">
             <div class="plan">
                 <h3>Gratis</h3>
@@ -636,9 +769,9 @@
                     <li><i class="fas fa-check"></i> 1 ordenador</li>
                     <li><i class="fas fa-check"></i> Solo con Alexa</li>
                 </ul>
-                <a href="/dashboard.html" class="btn">Empezar gratis</a>
+                <a href="/register.html" class="btn">Empezar gratis</a>
             </div>
-            
+
             <div class="plan popular">
                 <div class="popular-badge">Más popular</div>
                 <h3>Pro</h3>
@@ -651,9 +784,9 @@
                     <li><i class="fas fa-check"></i> Hasta 5 ordenadores</li>
                     <li><i class="fas fa-check"></i> Alexa + Apple Home + HA</li>
                 </ul>
-                <a href="/dashboard.html" class="btn">Elegir Pro</a>
+                <a href="/register.html?plan=pro" class="btn">Elegir Pro</a>
             </div>
-            
+
             <div class="plan">
                 <h3>Ultimate</h3>
                 <div class="price">19.99€<span>/año</span></div>
@@ -665,13 +798,13 @@
                     <li><i class="fas fa-check"></i> Hasta 20 ordenadores</li>
                     <li><i class="fas fa-check"></i> Todas las integraciones</li>
                 </ul>
-                <a href="/dashboard.html" class="btn">Elegir Ultimate</a>
+                <a href="/register.html?plan=ultimate" class="btn">Elegir Ultimate</a>
             </div>
         </div>
     </section>
-    
+
     <!-- FAQ -->
-    <section id="faq" class="faq">
+    <section class="faq" id="faq">
         <h2 class="section-title">Preguntas frecuentes</h2>
         <div class="faq-grid">
             <div class="faq-item">
@@ -686,7 +819,7 @@
                     ¿Qué necesito para que Wake-on-LAN funcione?
                     <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="faq-answer">Solo tener activado Wake-on-LAN en la BIOS y en Windows. El cliente local se encarga del resto.</div>
+                <div class="faq-answer">Solo tener activado Wake-on-LAN en la BIOS y en Windows. El cliente local se encarga del resto. El cliente local debe ejecutarse en segundo plano.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
@@ -711,16 +844,49 @@
             </div>
         </div>
     </section>
-    
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2>Listo para desbloquear todo el potencial de tu PC</h2>
+        <p>Únete a miles de usuarios que ya controlan su computadora con la voz</p>
+        <a href="/register.html" class="btn-primary">Comenzar ahora</a>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
-        <p>© 2025 SantaBoot — Enciende tu PC con voz</p>
-        <p style="margin-top: 0.5rem;">
-            <a href="/privacy.html" style="color: #666; text-decoration: none;">Política de Privacidad</a> |
-            <a href="/terms.html" style="color: #666; text-decoration: none;">Términos de Uso</a>
-        </p>
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h4>Producto</h4>
+                <a href="#producto">Características</a>
+                <a href="/precios.html">Precios</a>
+                <a href="/descargas.html">Descargas</a>
+                <a href="#ecosistemas">Ecosistemas</a>
+            </div>
+            <div class="footer-column">
+                <h4>Recursos</h4>
+                <a href="/faq.html">Preguntas frecuentes</a>
+                <a href="/soporte.html">Soporte</a>
+                <a href="/documentacion.html">Documentación</a>
+            </div>
+            <div class="footer-column">
+                <h4>Legales</h4>
+                <a href="/privacidad.html">Aviso legal</a>
+                <a href="/privacidad.html">Política de privacidad</a>
+                <a href="/terminos.html">Términos de uso</a>
+                <a href="/cookies.html">Política de cookies</a>
+            </div>
+            <div class="footer-column">
+                <h4>Contacto</h4>
+                <a href="mailto:soporte@santaboot.com">soporte@santaboot.com</a>
+                <a href="#">Twitter</a>
+                <a href="#">GitHub</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 SantaBoot — Enciende tu PC con voz</p>
+        </div>
     </footer>
-    
+
     <script>
         // FAQ Accordion
         document.querySelectorAll('.faq-question').forEach(question => {
@@ -728,27 +894,16 @@
                 question.classList.toggle('active');
             });
         });
-        
-        // Animación al scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
-        }, observerOptions);
-        
-        document.querySelectorAll('.feature-card, .step, .plan').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
         });
     </script>
 </body>
