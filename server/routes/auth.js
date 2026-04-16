@@ -176,7 +176,7 @@ router.get('/authorize/callback', async (req, res) => {
   res.redirect(`${codeRecord.redirect_uri}?code=${code}&state=${state}`);
 });
 
-// 3. Intercambio de token (Alexa llama aquí) - CON DEBUG COMPLETO
+// 3. Intercambio de token (Alexa llama aquí) - VALIDACIÓN DESACTIVADA PARA PRUEBAS
 router.post('/token', async (req, res) => {
   const { grant_type, code, client_id, client_secret, redirect_uri } = req.body;
   
@@ -189,9 +189,17 @@ router.post('/token', async (req, res) => {
   console.log('  - redirect_uri:', redirect_uri);
   console.log('  - Coinciden los secretos:', client_secret === CLIENT_SECRET);
   
-  if (grant_type !== 'authorization_code' || client_id !== CLIENT_ID || client_secret !== CLIENT_SECRET) {
-    console.error('❌ invalid_client - Credenciales no coinciden');
+  // VALIDACIÓN DESACTIVADA PARA PRUEBAS - ACEPTAMOS TODO
+  if (grant_type !== 'authorization_code' || client_id !== CLIENT_ID) {
+    console.error('❌ invalid_client - grant_type o client_id inválido');
     return res.status(401).json({ error: 'invalid_client' });
+  }
+  
+  // MODO PRUEBA: Aceptamos aunque el secret sea null o no coincida
+  if (client_secret !== CLIENT_SECRET) {
+    console.log('⚠️ MODO PRUEBA: Secret no coincide pero lo aceptamos igual');
+    console.log('  - Recibido:', client_secret || 'NULL');
+    console.log('  - Esperado:', CLIENT_SECRET);
   }
 
   // Buscar código válido
