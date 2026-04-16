@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { createClient } = require('@supabase/supabase-js');
-const crypto = require('crypto'); // ← Agregado para generar tokens seguros
+const crypto = require('crypto');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // ============================================================
@@ -90,49 +90,71 @@ router.post('/upgrade-to-premium', async (req, res) => {
 // ============================================================
 const CLIENT_ID = 'santaboot-alexa-client';
 const CLIENT_SECRET = process.env.ALEXA_CLIENT_SECRET || 'Sb00t_7xK9mP2vL4nQ8wR5yT1cF6hJ3dG0aE';
-const authCodes = new Map(); // Almacén temporal de códigos
+const authCodes = new Map();
 
 // 1. Alexa redirige aquí al usuario para loguearse en tu web
 router.get('/authorize', (req, res) => {
   const { response_type, client_id, redirect_uri, state } = req.query;
+  
   if (client_id !== CLIENT_ID || response_type !== 'code') {
     return res.status(400).send('Configuración inválida');
   }
+
   const code = crypto.randomBytes(16).toString('hex');
   authCodes.set(code, { redirect_uri, state, expires: Date.now() + 300000 });
-  // Maneja SITE_URL con o sin https://
-const normalizedUrl = siteUrl.startsWith('http') ? siteUrl : `https://${siteUrl}`;
-res.redirect(`${normalizedUrl}/login.html?code=${code}&state=${state}`);
+
+  // ✅ CORRECCIÓN: Definir siteUrl ANTES de usarla
+  const siteUrl = process.env.SITE_URL || 'santaboot-production.up.railway.app';
+  const normalizedUrl = siteUrl.startsWith('http') ? siteUrl : `https://${siteUrl}`;
+  
+  res.redirect(`${normalizedUrl}/login.html?code=${code}&state=${state}`);
 });
 
 // 2. Tu frontend llama aquí tras login exitoso (callback)
 router.get('/authorize/callback', async (req, res) => {
   const { code, state, userId } = req.query;
+  
   const stored = authCodes.get(code);
-  if (!stored || stored.expires < Date.now()) return res.status(400).send('Sesión expirada');
+  if (!stored || stored.expires < Date.now()) {
+    return res.status(400).send('Sesión expirada');
+  }
 
   if (userId) {
     await supabase.from('profiles').update({ alexa_linked: true }).eq('id', userId);
   }
   authCodes.delete(code);
+  
   res.redirect(`${stored.redirect_uri}?code=${code}&state=${state}`);
 });
 
 // 3. Alexa intercambia el código por un Access Token persistente
 router.post('/token', async (req, res) => {
   const { grant_type, code, client_id, client_secret, redirect_uri } = req.body;
+  
   if (grant_type !== 'authorization_code' || client_id !== CLIENT_ID || client_secret !== CLIENT_SECRET) {
     return res.status(401).json({ error: 'invalid_client' });
   }
+
   const stored = authCodes.get(code);
   if (!stored || stored.redirect_uri !== redirect_uri) {
     return res.status(400).json({ error: 'invalid_grant' });
   }
+
   const access_token = crypto.randomBytes(24).toString('hex');
   const refresh_token = crypto.randomBytes(24).toString('hex');
-  await supabase.from('alexa_tokens').upsert({ code, access_token, refresh_token, used: true }, { onConflict: 'code' });
+  
+  await supabase
+    .from('alexa_tokens')
+    .upsert({ code, access_token, refresh_token, used: true }, { onConflict: 'code' });
+
   authCodes.delete(code);
-  res.json({ access_token, token_type: 'Bearer', expires_in: 3600, refresh_token });
+
+  res.json({
+    access_token,
+    token_type: 'Bearer',
+    expires_in: 3600,
+    refresh_token
+  });
 });
 
 module.exports = router;
