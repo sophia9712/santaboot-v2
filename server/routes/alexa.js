@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { createClient } = require('@supabase/supabase-js');
+const wol = require('wake_on_lan'); // ⭐ NUEVO
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // ============================================================
@@ -25,13 +26,41 @@ async function getUserFromToken(accessToken) {
         if (!userId) return null;
         const { data: profile } = await supabase
             .from('profiles')
-            .select('id, email, plan')
+            .select('id, email, plan, ip_address')
             .eq('id', userId)
             .single();
         return profile;
     } catch (e) {
         return null;
     }
+}
+
+// ============================================================
+// === FUNCIÓN WOL CON IP DEL USUARIO ===
+// ============================================================
+function sendWakeOnLanToIP(mac, ip, callback) {
+    if (!ip) {
+        console.log('❌ No hay IP guardada para este usuario');
+        return callback(new Error('No IP address'));
+    }
+    
+    console.log(`📡 Enviando WOL a MAC ${mac} vía IP ${ip}`);
+    
+    // Intentar con puertos 9 y 7
+    const ports = [9, 7];
+    let attempts = 0;
+    
+    ports.forEach(port => {
+        wol.wake(mac, { address: ip, port }, (err) => {
+            attempts++;
+            if (err) {
+                console.log(`❌ Error WOL a ${ip}:${port} - ${err.message}`);
+            } else {
+                console.log(`✅ WOL enviado a ${ip}:${port}`);
+            }
+            if (attempts === ports.length && callback) callback();
+        });
+    });
 }
 
 // ============================================================
@@ -110,7 +139,7 @@ router.post('/wake', async (req, res) => {
         }
 
         // ============================================================
-        // === ENCENDER PC (WakeDeviceIntent) - CON DIRECTIVE ===
+        // === ENCENDER PC (WakeDeviceIntent) ===
         // ============================================================
         if (intent === 'WakeDeviceIntent') {
             const { data: device } = await supabase
@@ -128,20 +157,14 @@ router.post('/wake', async (req, res) => {
                 });
             }
 
-            console.log(`🎯 Enviando directive WOL a Alexa para MAC: ${device.mac_address}`);
+            // ⭐ NUEVO: Enviar WOL usando la IP guardada del usuario
+            sendWakeOnLanToIP(device.mac_address, user.ip_address, () => {
+                console.log(`✅ Proceso WOL completado para ${device.name}`);
+            });
 
-            // RESPUESTA ESPECIAL: Le decimos a Alexa que emita el paquete WOL desde el Echo
             return res.json({
                 response: {
-                    directives: [{
-                        type: "Connection.SendRequest",
-                        name: "WakeUp",
-                        payload: {
-                            "macAddress": device.mac_address,
-                            "broadcastAddress": "255.255.255.255"
-                        }
-                    }],
-                    shouldEndSession: true
+                    outputSpeech: { type: 'SSML', ssml: `<speak>✅ Señal enviada a ${device.name}. Tu PC debería encenderse en unos segundos.</speak>` }
                 }
             });
         }

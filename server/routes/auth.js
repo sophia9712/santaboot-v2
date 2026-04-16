@@ -90,6 +90,11 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return res.status(400).json({ error: error.message });
+  
+  // ⭐ NUEVO: Guardar la IP del usuario automáticamente
+  const userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  await supabase.from('profiles').update({ ip_address: userIp }).eq('id', data.user.id);
+  
   res.json({ token: data.session.access_token, user: data.user });
 });
 
