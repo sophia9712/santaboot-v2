@@ -9,7 +9,6 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { 
   font-family: 'Inter', system-ui, sans-serif; 
-  /* ✅ GRADIENTE MORADO OSCURO (igual que register.html) */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
   min-height: 100vh; 
   display: flex; 
@@ -104,9 +103,7 @@ input:focus {
 </div>
 
 <script>
-// ============================================================================
-// SOPORTE PARA VINCULACIÓN AUTOMÁTICA CON ALEXA (OAuth2)
-// ============================================================================
+// Detectar OAuth de Alexa al cargar
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
@@ -116,13 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Función para completar OAuth tras login exitoso
 window.completeAlexaOAuth = async function(userId) {
   const stored = sessionStorage.getItem('alexa_oauth');
   if (!stored) return false;
-  
   const { code, state } = JSON.parse(stored);
   sessionStorage.removeItem('alexa_oauth');
-  
   window.location.href = `/auth/authorize/callback?code=${code}&state=${state}&userId=${userId}`;
   return true;
 };
@@ -145,8 +141,6 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     if (res.ok) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      
-      // Intentar completar OAuth de Alexa
       const handled = await window.completeAlexaOAuth(data.user?.id);
       if (!handled) {
         window.location.href = '/dashboard.html';
