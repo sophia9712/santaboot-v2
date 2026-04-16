@@ -34,7 +34,6 @@ input:focus { outline: none; border-color: #667eea; }
 .empty-message, .loading { text-align: center; color: #6b7280; padding: 2rem; }
 .error-message { background: #fee2e2; color: #ef4444; padding: 0.75rem; border-radius: 10px; margin-bottom: 1rem; display: none; }
 .success-message { background: #dcfce7; color: #16a34a; padding: 0.75rem; border-radius: 10px; margin-bottom: 1rem; display: none; }
-/* Estilos nuevos para Alexa */
 .alexa-card { background: white; border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #667eea; }
 .alexa-status { font-weight: 600; margin: 0.5rem 0; }
 .alexa-status.linked { color: #10b981; }
@@ -46,7 +45,7 @@ input:focus { outline: none; border-color: #667eea; }
 <div class="container">
   <div id="planInfo"></div>
   
-  <!-- === NUEVO: TARJETA DE VINCULACIÓN ALEXA === -->
+  <!-- VINCULACIÓN CON ALEXA -->
   <div class="alexa-card">
     <h2><i class="fab fa-amazon"></i> Vincular con Alexa</h2>
     <p class="alexa-status unlinked" id="alexaStatus">Estado: No vinculado</p>
@@ -55,8 +54,20 @@ input:focus { outline: none; border-color: #667eea; }
     <p style="font-size:0.8rem; color:#6b7280; margin-top:0.5rem;">Al vincular, Alexa podrá encender tus PCs automáticamente sin pasos manuales.</p>
   </div>
 
-  <div class="add-pc-card"><h2><i class="fas fa-plus-circle"></i> Agregar nuevo PC</h2><div id="addErrorMessage" class="error-message"></div><div id="addSuccessMessage" class="success-message"></div><div class="form-group"><label>Nombre del PC</label><input type="text" id="deviceName" placeholder="Ej: Mi PC Gamer"></div><div class="form-group"><label>Dirección MAC</label><input type="text" id="macAddress" placeholder="Ej: 00:1A:2B:3C:4D:5E"></div><div class="form-group"><label>Dirección IP (opcional)</label><input type="text" id="ipAddress" placeholder="Ej: 192.168.1.100"></div><button class="btn-primary" id="addDeviceBtn">Agregar PC</button></div>
-  <div class="devices-list"><h2><i class="fas fa-desktop"></i> Mis PCs</h2><div id="devicesContainer"><div class="loading">Cargando tus PCs...</div></div></div>
+  <div class="add-pc-card">
+    <h2><i class="fas fa-plus-circle"></i> Agregar nuevo PC</h2>
+    <div id="addErrorMessage" class="error-message"></div>
+    <div id="addSuccessMessage" class="success-message"></div>
+    <div class="form-group"><label>Nombre del PC</label><input type="text" id="deviceName" placeholder="Ej: Mi PC Gamer"></div>
+    <div class="form-group"><label>Dirección MAC</label><input type="text" id="macAddress" placeholder="Ej: 00:1A:2B:3C:4D:5E"></div>
+    <div class="form-group"><label>Dirección IP (opcional)</label><input type="text" id="ipAddress" placeholder="Ej: 192.168.1.100"></div>
+    <button class="btn-primary" id="addDeviceBtn">Agregar PC</button>
+  </div>
+  
+  <div class="devices-list">
+    <h2><i class="fas fa-desktop"></i> Mis PCs</h2>
+    <div id="devicesContainer"><div class="loading">Cargando tus PCs...</div></div>
+  </div>
 </div>
 
 <script src="https://js.stripe.com/v3/"></script>
@@ -66,15 +77,15 @@ const user = JSON.parse(localStorage.getItem('user') || '{}');
 if (!token) window.location.href = '/login.html';
 document.getElementById('userEmail').textContent = user.email || 'usuario';
 
-// === TU LÓGICA ORIGINAL (INTACTA) ===
 async function loadUserPlan() {
   try {
     const res = await fetch('/auth/me', { headers: { 'Authorization': `Bearer ${token}` } });
     if (!res.ok) return;
     const data = await res.json();
     const planInfo = document.getElementById('planInfo');
-    if (data.plan === 'premium') planInfo.innerHTML = `<div class="plan-badge plan-premium">⭐ PLAN PREMIUM - PCs ilimitados</div>`;
-    else {
+    if (data.plan === 'premium') {
+      planInfo.innerHTML = `<div class="plan-badge plan-premium">⭐ PLAN PREMIUM - PCs ilimitados</div>`;
+    } else {
       planInfo.innerHTML = `<div class="plan-badge plan-free">📦 PLAN GRATIS - 1 PC máximo <button class="upgrade-btn" id="upgradeBtn">Actualizar a Premium ($9.99/mes)</button></div>`;
       document.getElementById('upgradeBtn')?.addEventListener('click', async () => {
         try {
@@ -86,6 +97,7 @@ async function loadUserPlan() {
     }
   } catch (e) { console.error(e); }
 }
+
 async function loadDevices() {
   const container = document.getElementById('devicesContainer');
   try {
@@ -102,6 +114,7 @@ async function loadDevices() {
     document.querySelectorAll('.btn-delete').forEach(btn => btn.onclick = async () => { if (confirm('¿Eliminar?')) { await fetch(`/devices/${btn.dataset.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); loadDevices(); } });
   } catch { container.innerHTML = '<div class="error-message" style="display:block">Error al cargar</div>'; }
 }
+
 async function addDevice() {
   const name = document.getElementById('deviceName').value.trim();
   const mac = document.getElementById('macAddress').value.trim();
@@ -115,13 +128,14 @@ async function addDevice() {
     else showError(data.error);
   } catch { showError('Error de conexión'); }
 }
+
 function showError(m) { const e = document.getElementById('addErrorMessage'); e.textContent = m; e.style.display = 'block'; setTimeout(()=>e.style.display='none', 4000); }
 function showSuccess(m) { const e = document.getElementById('addSuccessMessage'); e.textContent = m; e.style.display = 'block'; setTimeout(()=>e.style.display='none', 3000); }
 function hideMessages() { document.getElementById('addErrorMessage').style.display = 'none'; document.getElementById('addSuccessMessage').style.display = 'none'; }
 document.getElementById('logoutBtn').onclick = () => { localStorage.clear(); window.location.href = '/'; };
 document.getElementById('addDeviceBtn').onclick = addDevice;
 
-// === NUEVO: FUNCIONES DE VINCULACIÓN ALEXA ===
+// === FUNCIONES DE VINCULACIÓN CON ALEXA ===
 function startAlexaLink() {
   const clientId = 'santaboot-alexa-client';
   const redirectUri = `https://${window.location.host}/auth/authorize/callback`;
@@ -130,6 +144,7 @@ function startAlexaLink() {
   const authUrl = `https://pitangui.amazon.com/api/skill/link/M20X07RJHC3DO9?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${encodeURIComponent(state)}&response_type=code`;
   window.location.href = authUrl;
 }
+
 async function unlinkAlexa() {
   if (!confirm('¿Desvincular Alexa? Deberás volver a iniciar sesión para usar la skill.')) return;
   try {
@@ -137,6 +152,7 @@ async function unlinkAlexa() {
     if (res.ok) { alert('Desvinculado'); checkAlexaStatus(); }
   } catch { alert('Error al desvincular'); }
 }
+
 async function checkAlexaStatus() {
   try {
     const res = await fetch('/auth/me', { headers: { 'Authorization': `Bearer ${token}` } });
@@ -158,6 +174,7 @@ async function checkAlexaStatus() {
     }
   } catch { console.error('Error verificando Alexa'); }
 }
+
 // Verificar callback de Alexa
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('code') && urlParams.get('state') === sessionStorage.getItem('alexa_link_state')) {
@@ -165,6 +182,7 @@ if (urlParams.get('code') && urlParams.get('state') === sessionStorage.getItem('
   sessionStorage.removeItem('alexa_link_state');
   window.history.replaceState({}, document.title, window.location.pathname);
 }
+
 document.addEventListener('DOMContentLoaded', () => { loadUserPlan(); loadDevices(); checkAlexaStatus(); });
 </script>
 </body>

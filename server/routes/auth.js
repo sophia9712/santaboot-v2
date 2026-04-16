@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // ============================================================
-// === TU LÓGICA ORIGINAL (INTACTA: Cupones, Registro, Login) ===
+// === TU LÓGICA ORIGINAL (VIP, Registro, Login) - INTACTA ===
 // ============================================================
 const VIP_CODES = {
   'SANTACRUZVIP': { days: 3650, description: 'Premium de por vida (~10 años)' },
@@ -86,13 +86,13 @@ router.post('/upgrade-to-premium', async (req, res) => {
 });
 
 // ============================================================
-// === NUEVO: VINCULACIÓN AUTOMÁTICA CON ALEXA (OAUTH2) ===
+// === NUEVO: VINCULACIÓN AUTOMÁTICA CON ALEXA (OAuth2) ===
 // ============================================================
 const CLIENT_ID = 'santaboot-alexa-client';
 const CLIENT_SECRET = process.env.ALEXA_CLIENT_SECRET || 'Sb00t_7xK9mP2vL4nQ8wR5yT1cF6hJ3dG0aE';
 const authCodes = new Map();
 
-// 1. Alexa redirige aquí al usuario para loguearse en tu web
+// 1. Alexa redirige aquí al usuario para loguearse
 router.get('/authorize', (req, res) => {
   const { response_type, client_id, redirect_uri, state } = req.query;
   
@@ -103,14 +103,13 @@ router.get('/authorize', (req, res) => {
   const code = crypto.randomBytes(16).toString('hex');
   authCodes.set(code, { redirect_uri, state, expires: Date.now() + 300000 });
 
-  // ✅ CORRECCIÓN: Definir siteUrl ANTES de usarla
   const siteUrl = process.env.SITE_URL || 'santaboot-production.up.railway.app';
   const normalizedUrl = siteUrl.startsWith('http') ? siteUrl : `https://${siteUrl}`;
   
   res.redirect(`${normalizedUrl}/login.html?code=${code}&state=${state}`);
 });
 
-// 2. Tu frontend llama aquí tras login exitoso (callback)
+// 2. Callback tras login exitoso
 router.get('/authorize/callback', async (req, res) => {
   const { code, state, userId } = req.query;
   
@@ -127,7 +126,7 @@ router.get('/authorize/callback', async (req, res) => {
   res.redirect(`${stored.redirect_uri}?code=${code}&state=${state}`);
 });
 
-// 3. Alexa intercambia el código por un Access Token persistente
+// 3. Intercambio de token (Alexa llama aquí)
 router.post('/token', async (req, res) => {
   const { grant_type, code, client_id, client_secret, redirect_uri } = req.body;
   

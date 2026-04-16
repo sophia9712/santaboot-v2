@@ -10,31 +10,41 @@ function sendWakeOnLan(mac, broadcastIP = '255.255.255.255') {
     try {
       const macBytes = mac.split(/[:\-]/).map(b => parseInt(b, 16));
       if (macBytes.length !== 6) throw new Error('MAC inválida');
+      
       const packet = Buffer.alloc(102);
       for (let i = 0; i < 6; i++) packet[i] = 0xff;
-      for (let i = 1; i <= 16; i++) macBytes.forEach((b, j) => { packet[i * 6 + j] = b; });
+      for (let i = 1; i <= 16; i++) {
+        macBytes.forEach((b, j) => { packet[i * 6 + j] = b; });
+      }
+
       const socket = dgram.createSocket('udp4');
       socket.once('error', reject);
       socket.once('listening', () => socket.setBroadcast(true));
+      
       socket.send(packet, 0, packet.length, 9, broadcastIP, (err) => {
         socket.close();
-        if (err) reject(err); else resolve();
+        if (err) reject(err); 
+        else resolve();
       });
-    } catch (err) { reject(err); }
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
 router.post('/wake', async (req, res) => {
   try {
     const deviceName = req.body.request?.intent?.slots?.DeviceName?.value;
-    // Alexa envía el token automáticamente en el header Authorization
     const accessToken = req.headers.authorization?.replace('Bearer ', '');
 
     if (!accessToken) {
-      return res.json({ response: { outputSpeech: { type: 'SSML', ssml: '<speak>Por favor, vincula tu cuenta en la app de Alexa.</speak>' } } });
+      return res.json({
+        response: {
+          outputSpeech: { type: 'SSML', ssml: '<speak>Por favor, vincula tu cuenta en la app de Alexa.</speak>' }
+        }
+      });
     }
 
-    // 1. Identificar al usuario por su Access Token de Alexa
     const { data: tokenRecord } = await supabase
       .from('alexa_tokens')
       .select('user_id')
@@ -42,10 +52,13 @@ router.post('/wake', async (req, res) => {
       .single();
 
     if (!tokenRecord) {
-      return res.json({ response: { outputSpeech: { type: 'SSML', ssml: '<speak>No reconocí tu cuenta. Vincúlala nuevamente en la app de Alexa.</speak>' } } });
+      return res.json({
+        response: {
+          outputSpeech: { type: 'SSML', ssml: '<speak>No reconocí tu cuenta. Vincúlala nuevamente en la app de Alexa.</speak>' }
+        }
+      });
     }
 
-    // 2. Buscar SOLO los dispositivos de ESTE usuario
     const { data: device } = await supabase
       .from('devices')
       .select('*')
@@ -54,10 +67,13 @@ router.post('/wake', async (req, res) => {
       .single();
 
     if (!device) {
-      return res.json({ response: { outputSpeech: { type: 'SSML', ssml: `<speak>No encontré "${deviceName}" en tus PCs registrados.</speak>` } } });
+      return res.json({
+        response: {
+          outputSpeech: { type: 'SSML', ssml: `<speak>No encontré "${deviceName}" en tus PCs registrados.</speak>` }
+        }
+      });
     }
 
-    // 3. Enviar señal Wake-on-LAN
     await sendWakeOnLan(device.mac_address, device.broadcast_ip || '255.255.255.255');
 
     return res.json({
@@ -67,7 +83,11 @@ router.post('/wake', async (req, res) => {
     });
   } catch (error) {
     console.error('❌ Error Alexa:', error);
-    return res.json({ response: { outputSpeech: { type: 'SSML', ssml: '<speak>Ocurrió un error al procesar tu solicitud.</speak>' } } });
+    return res.json({
+      response: {
+        outputSpeech: { type: 'SSML', ssml: '<speak>Ocurrió un error al procesar tu solicitud.</speak>' }
+      }
+    });
   }
 });
 
