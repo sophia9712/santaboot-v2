@@ -3,68 +3,76 @@ const router = express.Router();
 const { createClient } = require('@supabase/supabase-js');
 const dgram = require('dgram');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
-function sendWakeOnLan(mac, broadcastIP) {
+function sendWakeOnLan(mac, broadcastIP = '255.255.255.255') {
   return new Promise((resolve, reject) => {
-    const macBytes = mac.split(':').map(b => parseInt(b, 16));
-    const packet = Buffer.alloc(102);
-    for (let i = 0; i < 6; i++) packet[i] = 0xff;
-    for (let i = 1; i <= 16; i++) {
-      macBytes.forEach((b, j) => {
-        packet[i * 6 + j] = b;
+    try {
+      const macBytes = mac.split(/[:\-]/).map(b => parseInt(b, 16));
+      if (macBytes.length !== 6) throw new Error('MAC inválida');
+      const packet = Buffer.alloc(102);
+      for (let i = 0; i < 6; i++) packet[i] = 0xff;
+      for (let i = 1; i <= 16; i++) macBytes.forEach((b, j) => { packet[i * 6 + j] = b; });
+      const socket = dgram.createSocket('udp4');
+      socket.once('error', reject);
+      socket.once('listening', () => socket.setBroadcast(true));
+      socket.send(packet, 0, packet.length, 9, broadcastIP, (err) => {
+        socket.close();
+        if (err) reject(err); else resolve();
       });
-    }
-    const socket = dgram.createSocket('udp4');
-    socket.once('error', reject);
-    socket.once('listening', () => socket.setBroadcast(true));
-    socket.send(packet, 0, packet.length, 9, broadcastIP, (err) => {
-      socket.close();
-      if (err) reject(err);
-      else resolve();
-    });
+    } catch (err) { reject(err); }
   });
 }
 
 router.post('/wake', async (req, res) => {
-  console.log('📡 Petición recibida:', req.body);
-  
-  const { alexa_user_id, device_name } = req.body;
-  
-  if (!alexa_user_id) {
-    return res.status(400).json({ error: 'Falta el ID de usuario' });
-  }
-  
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('alexa_user_id', alexa_user_id)
-    .single();
-    
-  if (!profile) {
-    return res.status(404).json({ error: 'Usuario no vinculado' });
-  }
-  
-  const { data: devices } = await supabase
-    .from('devices')
-    .select('*')
-    .eq('user_id', profile.id);
-    
-  if (!devices || devices.length === 0) {
-    return res.status(404).json({ error: 'PC no encontrado' });
-  }
-  
-  const device = devices[0];
-  
   try {
+    const deviceName = req.body.request?.intent?.slots?.DeviceName?.value;
+    // Alexa envía el token automáticamente en el header Authorization
+    const accessToken = req.headers.authorization?.replace('Bearer ', '');
+
+    if (!accessToken) {
+      return res.json({ response: { outputSpeech: { type: 'SSML', ssml: '<speak>Por favor, vincula tu cuenta en la app de Alexa.</speak>' } } });
+    }
+
+    // 1. Identificar al usuario por su Access Token de Alexa
+    const { data: tokenRecord } = await supabase
+      .from('alexa_tokens')
+      .select('user_id')
+      .eq('access_token', accessToken)
+      .single();
+
+    if (!tokenRecord) {
+      return res.json({ response: { outputSpeech: { type: 'SSML', ssml: '<speak>No reconocí tu cuenta. Vincúlala nuevamente en la app de Alexa.</speak>' } } });
+    }
+
+    // 2. Buscar SOLO los dispositivos de ESTE usuario
+    const { data: device } = await supabase
+      .from('devices')
+      .select('*')
+      .eq('user_id', tokenRecord.user_id)
+      .ilike('name', deviceName?.trim())
+      .single();
+
+    if (!device) {
+      return res.json({ response: { outputSpeech: { type: 'SSML', ssml: `<speak>No encontré "${deviceName}" en tus PCs registrados.</speak>` } } });
+    }
+
+    // 3. Enviar señal Wake-on-LAN
     await sendWakeOnLan(device.mac_address, device.broadcast_ip || '255.255.255.255');
-    res.json({ message: 'Señal enviada a ' + device.name + ' correctamente' });
-  } catch (err) {
-    res.status(500).json({ error: 'Error al enviar la señal: ' + err.message });
+
+    return res.json({
+      response: {
+        outputSpeech: { type: 'SSML', ssml: `<speak>✅ Señal enviada a ${device.name}. Tu PC debería encenderse en unos segundos.</speak>` }
+      }
+    });
+  } catch (error) {
+    console.error('❌ Error Alexa:', error);
+    return res.json({ response: { outputSpeech: { type: 'SSML', ssml: '<speak>Ocurrió un error al procesar tu solicitud.</speak>' } } });
   }
+});
+
+router.get('/wake', (req, res) => {
+  res.json({ message: 'SantaBoot API running. Usa POST para comandos.' });
 });
 
 module.exports = router;
