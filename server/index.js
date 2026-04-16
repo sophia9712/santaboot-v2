@@ -12,6 +12,13 @@ app.get('/dashboard', (req, res) => {
   res.redirect('/dashboard.html' + (req.url.includes('?') ? req.url.substring(req.url.indexOf('?')) : ''));
 });
 
+// Redirecciones amigables (sin .html)
+app.get('/register', (req, res) => res.redirect('/register.html'));
+app.get('/login', (req, res) => res.redirect('/login.html'));
+app.get('/dashboard', (req, res) => res.redirect('/dashboard.html'));
+app.get('/privacy', (req, res) => res.redirect('/privacy.html'));
+app.get('/terms', (req, res) => res.redirect('/terms.html'));
+
 // Importar rutas
 const authRoutes = require('./routes/auth');
 const deviceRoutes = require('./routes/devices');
